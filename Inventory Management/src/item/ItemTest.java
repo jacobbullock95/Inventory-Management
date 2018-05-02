@@ -1,7 +1,6 @@
 package item;
 
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void test() {
+	public void test1() {
 			
 		
 		String name = "rice";
