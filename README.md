@@ -2,5 +2,6 @@
 # Semester 1 2018
 
 # Group Members:
-Jacob Bullock \n
+Jacob Bullock 
+
 Jesse Haviland
