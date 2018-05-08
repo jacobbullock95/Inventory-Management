@@ -9,6 +9,7 @@ public class StockTest {
 	/*
 	 * The collection used for this should be a list such as ArrayList
 	 * This allows access to the items by the index in the list.
+	 * The array list needs to be 2D
 	 */
 	
 	Stock stock;
