@@ -34,7 +34,7 @@ public class OrdinaryTruckTest {
 	 */
 	
 	//Test class variables 
-	Map<Item, Integer> truckStock;
+	Stock truckStock;
 	private Item item1 = new Item("rice",2,3,225,300,null);
 	private Item item2 = new Item("beans",4,6,450,525,null);
 	private Item item3 = new Item("milk",2,3,300,425,3);
@@ -49,6 +49,7 @@ public class OrdinaryTruckTest {
 	 */
 	@Before @Test public void setUpOrdinaryTruckTest()  {
 		ordinaryTruck = new OrdinaryTruck();
+		truckStock = new Stock();
 	}
 	
 	/* Test 2: Gets the total cargo capacity of the truck
