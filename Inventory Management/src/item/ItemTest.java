@@ -36,7 +36,7 @@ public class ItemTest {
 		int sellPrice = 3;
 		int reorderPoint = 225;
 		int reorderAmount = 300;
-		//int temperature = null;
+		Object temperature = null;
 		
 		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
 		
