@@ -104,5 +104,90 @@ public class StockTest {
 		assertEquals(item2, stock.retrieve("b"));
 		assertEquals(item3, stock.retrieve("c"));
 	}
+	
+	/*
+	 * Creates a stock object and adds three items.
+	 * Tests the ability to edit a quantity of an item
+	 */
+	@Test
+	public void stockQuantityEditTest() {
+		
+		// Create an empty stock collection
+		stock = new Stock();
+		
+		// Add items to the collection
+		stock.add(item1);
+		stock.add(item2);
+		stock.add(item3);
+		
+		// stock.reduceQuantity(item name, number) should reduce the stock of item name by number
+		stock.reduceQuantity("a", 10);
+		stock.reduceQuantity("b", 500);
+		
+		assertEquals(10, stock.supply("a"));
+		assertEquals(502, stock.supply("b"));
+		
+		// stock.increaseQuantity(item name, number) should increase the stock of item name by number
+		stock.increaseQuantity("a", 5);
+		stock.increaseQuantity("b", 50);
+		
+		assertEquals(15, stock.supply("a"));
+		assertEquals(552, stock.supply("b"));
+	}
+	
+	/*
+	 * Creates a stock object and adds three items.
+	 * Tests the ability for the stock class to count quantity of all items
+	 */
+	@Test
+	public void stockQuantityTest() {
+		
+		// Create an empty stock collection
+		stock = new Stock();
+		
+		// Add items to the collection
+		stock.add(item1);
+		stock.add(item2);
+		stock.add(item3);
+		
+		// stock.countQuantity() should return an integer representing the total 
+		// quantity of all stock present
+		assertEquals(1062, stock.countQuantity());
+		
+		
+		// Edit quantities and test again
+		stock.increaseQuantity("a", 10);
+		stock.decreaseQuantity("b", 500);
+		
+		assertEquals(1062 + 10 - 500, stock.countQuantity());
+	}
+	
+	/*
+	 * Creates a stock object and adds three items.
+	 * Tests the ability for the stock class to count cost of all items
+	 */
+	@Test
+	public void stockQuantityTest() {
+		
+		// Create an empty stock collection
+		stock = new Stock();
+		
+		// Add items to the collection
+		stock.add(item1);
+		stock.add(item2);
+		stock.add(item3);
+		
+		// stock.countCost() should return an integer representing the total 
+		// cast of all stock present
+		assertEquals(1*20 +  5*1002 + 8*40 , stock.countCost());
+		
+		
+		// Edit quantities and test again
+		stock.increaseQuantity("a", 10);
+		stock.decreaseQuantity("b", 500);
+		
+		assertEquals(1*30 +  5*502 + 8*40 , stock.countCost());
+	}
+	
 
 }
