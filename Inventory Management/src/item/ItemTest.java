@@ -38,14 +38,14 @@ public class ItemTest {
 		int reorderAmount = 300;
 		Object temperature = null;
 		
-		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount, temperature);
 		
-		assertEquals(name, item.cost());
-		assertEquals(cost, item.name());
-		assertEquals(sellPrice, item.sellPrice());
-		assertEquals(reorderPoint, item.reorderPoint());
-		assertEquals(reorderAmount, item.reorderAmount());
-		assertEquals(null, item.temperature());
+		assertEquals(name, item.getName());
+		assertEquals(cost, item.getCost());
+		assertEquals(sellPrice, item.getSellPrice());
+		assertEquals(reorderPoint, item.getReorderPoint());
+		assertEquals(reorderAmount, item.getReorderAmount());
+		assertEquals(temperature, item.getTemperature());
 	}
 	
 	/*
@@ -61,15 +61,15 @@ public class ItemTest {
 		int reorderAmount = 575;
 		int temperature = -14;
 		
-		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount, temperature);
 		
 		
-		assertEquals(name, item.cost());
-		assertEquals(cost, item.name());
-		assertEquals(sellPrice, item.sellPrice());
-		assertEquals(reorderPoint, item.reorderPoint());
-		assertEquals(reorderAmount, item.reorderAmount());
-		assertEquals(temperature, item.temperature());
+		assertEquals(name, item.getName());
+		assertEquals(cost, item.getCost());
+		assertEquals(sellPrice, item.getSellPrice());
+		assertEquals(reorderPoint, item.getReorderPoint());
+		assertEquals(reorderAmount, item.getReorderAmount());
+		assertEquals(temperature, item.getTemperature());
 	}
 
 }
