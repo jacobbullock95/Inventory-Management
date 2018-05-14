@@ -9,23 +9,30 @@ import org.junit.Test;
 
 public class ManifestTest {
 
-	/* Test 0: Declaring Manifest objects
+	/* 
+	 * Declaring Manifest objects
 	 */
 	Manifest manifest;
-	Truck truck1 = new OrdinaryTruck();
-	Truck truck2 = new OrdinaryTruck();
-	Truck truck3 = new RefrigeratedTruck();
+	Truck truck1;
+	Truck truck2;
+	Truck truck3;
 
 
-	/* Test 1: Constructing a Manifest object
+	/* 
+	 * Pre test: Constructing a Manifest object
 	 */
-	@Before @Test public void setUpOrdinaryTruckTest()  {
-		manifest = new Manifest();
+	@Before 
+	public void setUpOrdinaryTruckTest()  {
+		manifest = null;
+		truck1 = new OrdinaryTruck();
+		truck2 = new OrdinaryTruck();
+		truck3 = new RefrigeratedTruck();
 	}
 	
-	/* Test 2: Count the manifest
+	/* 
+	 * Test 1: Count the manifest
 	 */
-	@Test public void countNumTrucksTest() throws ManifestException {
+	@Test public void countNumTrucksTest() throws DeliveryException {
 		//Create new manifest
 		manifest = new Manifest();
 		
@@ -36,12 +43,13 @@ public class ManifestTest {
 		
 		
 		//Check the capacity
-		assertEquals(3, manifest.numTrucks());
+		assertEquals(3, manifest.totalTrucks());
 	}
 	
-	/* Test 3: Get the total cost of the order
+	/* 
+	 * Test 2: Get the total cost of the order
 	 */
-	@Test public void getTotalCostTest() throws ManifestException {
+	@Test public void getTotalCostTest() throws DeliveryException {
 		//Create new manifest
 		manifest = new Manifest();
 		
@@ -50,19 +58,17 @@ public class ManifestTest {
 		manifest.addTruck(truck2);
 		manifest.addTruck(truck3);
 		
-		int cost = truck1.getCost() + truck2.getCost() + truck3.getCost();
+		double cost = truck1.getCost() + truck2.getCost() + truck3.getCost();
 		
 		//Check the capacity
-		assertEquals(cost, manifest.getTotalCost());
+		assertEquals(cost, manifest.getTotalCost(), 1.0);
 	}
 	
-	/* Test 4: List the manifest
+	/* 
+	 * Test 3: List the manifest
+	 * Hint: Use .toSrting()
 	 */
-	
-	/* Test 6: List the manifest
-	 *Hint: Use .toSrting()
-	 */
-	@Test public void listManifestTest() throws ManifestException  {
+	@Test public void listManifestTest() throws DeliveryException  {
 		//Create new manifest
 		manifest = new Manifest();
 		
@@ -73,7 +79,7 @@ public class ManifestTest {
 		
 		
 		//Check current items on the truck
-		assertEquals("truck1,truck2,truck3", ordinaryTruck.listManifest());
+		assertEquals("truck1,truck2,truck3", manifest.listManifest());
 				
 		
 	}

@@ -50,8 +50,8 @@ public class RefrigeratedTruckTest {
 	@Before 
 	public void setUpRefrigeratedTruckTest() {
 		refrigeratedTruck = new RefrigeratedTruck();
-		item1 = new Item("rice",2,3,225,300,null);
-		item2 = new Item("beans",4,6,450,525,null);
+		item1 = new Item("rice",2,3,225,300);
+		item2 = new Item("beans",4,6,450,525);
 		item3 = new Item("milk",2,3,300,425,3);
 		item4 = new Item("ice cream",8,14,175,250,-20);
 	}
@@ -59,7 +59,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 1: Gets the total cargo capacity of the truck
 	 */
-	@Test public void getTruckCapacityTest() throws RefrigeratedTruckException {
+	@Test public void getTruckCapacityTest() throws DeliveryException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -70,7 +70,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 2: Put an item of stock on the truck
 	 */
-	@Test public void loadStockItemTest() throws RefrigeratedTruckException {
+	@Test public void loadStockItemTest() throws DeliveryException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -78,14 +78,14 @@ public class RefrigeratedTruckTest {
 		refrigeratedTruck.loadOnTruck(item3, 1);
 		
 		//Check the item is on the truck
-		assertEquals(1, refrigeratedTruck.countItemStock(item1.getName()));
+		assertEquals(1, refrigeratedTruck.countItemStock(item3.getName()));
 		
 	}
 	
 	/*
 	 * Test 3: Counts the trucks current cargo
 	 */
-	@Test public void countTruckStockTest() throws RefrigeratedTruckException {
+	@Test public void countTruckStockTest() throws DeliveryException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 				
@@ -101,7 +101,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 4: Calculate the cost of the truck
 	 */
-	@Test public void getTruckCost() throws RefrigeratedTruckException {
+	@Test public void getTruckCost() throws DeliveryException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -112,7 +112,7 @@ public class RefrigeratedTruckTest {
 		
 		
 		//Check the cost is correct 
-		assertEquals(173298, refrigeratedTruck.getCost());
+		assertEquals(1732.98, refrigeratedTruck.getCost(), 1.0);
 		
 	}
 	
@@ -120,7 +120,7 @@ public class RefrigeratedTruckTest {
 	 * Test 5: List the cargo currently on the truck
 	 * Hint: Use .toSrting()
 	 */
-	@Test public void listCargoTest() throws RefrigeratedTruckException  {
+	@Test public void listCargoTest() throws DeliveryException  {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -140,7 +140,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 6: Test that truck temperature is cold enough for coldest item
 	 */
-	@Test public void getMaxTempTest() throws RefrigeratedTruckException  {
+	@Test public void getMaxTempTest() throws DeliveryException  {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		

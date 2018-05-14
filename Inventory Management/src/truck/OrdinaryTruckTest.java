@@ -52,8 +52,8 @@ public class OrdinaryTruckTest {
 	public void setUpOrdinaryTruckTest()  {
 		ordinaryTruck = new OrdinaryTruck();
 		//truckStock = new Stock();
-		item1 = new Item("rice",2,3,225,300,null);
-		item2 = new Item("beans",4,6,450,525,null);
+		item1 = new Item("rice",2,3,225,300);
+		item2 = new Item("beans",4,6,450,525);
 		item3 = new Item("milk",2,3,300,425,3);
 	}
 	
@@ -61,7 +61,7 @@ public class OrdinaryTruckTest {
 	 * Test 1: Gets the total cargo capacity of the truck
 	 */
 	@Test 
-	public void getTruckCapacityTest() throws OrdinaryTruckException {
+	public void getTruckCapacityTest() throws DeliveryException {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -73,7 +73,7 @@ public class OrdinaryTruckTest {
 	 * Test 2: Put an item of stock on the truck
 	 */
 	@Test 
-	public void loadStockItemTest() throws OrdinaryTruckException  {
+	public void loadStockItemTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -89,7 +89,7 @@ public class OrdinaryTruckTest {
 	 * Test 3: Counts the trucks current cargo
 	 */
 	@Test 
-	public void countTruckStockTest() throws OrdinaryTruckException  {
+	public void countTruckStockTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 				
@@ -106,7 +106,7 @@ public class OrdinaryTruckTest {
 	 * Test 4: Calculate the cost of the truck
 	 */
 	@Test 
-	public void getTruckCostTest() throws OrdinaryTruckException  {
+	public void getTruckCostTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -116,7 +116,7 @@ public class OrdinaryTruckTest {
 		
 		
 		//Check the cost is correct 
-		assertEquals(1200, ordinaryTruck.getCost());
+		assertEquals(875, ordinaryTruck.getCost(), 1.0);
 		
 	}
 	
@@ -126,7 +126,7 @@ public class OrdinaryTruckTest {
 	 * Hint: Use .toSrting()
 	 */
 	@Test 
-	public void listCargoTest() throws OrdinaryTruckException  {
+	public void listCargoTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -144,8 +144,8 @@ public class OrdinaryTruckTest {
 	/* 
 	 * Test 6: Throw error if temp controlled item is put on truck
 	 */
-	@Test(expected = OrdinaryTruckException.class)
-	public void throwTempErrorTest() throws OrdinaryTruckException  {
+	@Test(expected = DeliveryException.class)
+	public void throwTempErrorTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -157,8 +157,8 @@ public class OrdinaryTruckTest {
 	/* 
 	 * Test 7: Throw error if no room left on truck but item is trying to be loaded
 	 */
-	@Test(expected = OrdinaryTruckException.class)
-	public void truckFullTest() throws OrdinaryTruckException  {
+	@Test(expected = DeliveryException.class)
+	public void truckFullTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
