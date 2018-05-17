@@ -18,14 +18,9 @@
 package truck;
 
 import static org.junit.Assert.*;
-
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import item.Item;
-import item.Stock;
 
 public class OrdinaryTruckTest {
 	
@@ -34,27 +29,34 @@ public class OrdinaryTruckTest {
 	 */
 	
 	//Test class variables 
-	Stock truckStock;
-	private Item item1 = new Item("rice",2,3,225,300,null);
-	private Item item2 = new Item("beans",4,6,450,525,null);
-	private Item item3 = new Item("milk",2,3,300,425,3);
+	private Item item1;
+	private Item item2;
+	private Item item3;
 	
 	
-	/* Test 0: Declaring OridnaryTruck objects
+	/* 
+	 * Declaring OridnaryTruck objects
 	 */
 	OrdinaryTruck ordinaryTruck;
 
 
-	/* Test 1: Constructing a OrdinaryTruck object
+	/* 
+	 * Pre Test: Constructing a OrdinaryTruck object
 	 */
-	@Before @Test public void setUpOrdinaryTruckTest()  {
+	@Before 
+	public void setUpOrdinaryTruckTest()  {
 		ordinaryTruck = new OrdinaryTruck();
-		truckStock = new Stock();
+		//truckStock = new Stock();
+		item1 = new Item("rice",2,3,225,300);
+		item2 = new Item("beans",4,6,450,525);
+		item3 = new Item("milk",2,3,300,425,3);
 	}
 	
-	/* Test 2: Gets the total cargo capacity of the truck
+	/* 
+	 * Test 1: Gets the total cargo capacity of the truck
 	 */
-	@Test public void getTruckCapacityTest() throws OrdinaryTruckException {
+	@Test 
+	public void getTruckCapacityTest() throws DeliveryException {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -62,29 +64,33 @@ public class OrdinaryTruckTest {
 		assertEquals(1000, ordinaryTruck.getCapacity());
 	}
 	
-	/* Test 3: Put an item of stock on the truck
+	/* 
+	 * Test 2: Put an item of stock on the truck
 	 */
-	@Test public void loadStockItemTest() throws OrdinaryTruckException  {
+	@Test 
+	public void loadStockItemTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
 		//Put an item on the truck 
-		truckStock.loadOnTruck(item1, 1);
+		ordinaryTruck.loadOnTruck(item1, 1);
 		
 		//Check the item is on the truck
-		assertEquals(1, ordinaryTruck.countItemStock(item1));
+		assertEquals(1, ordinaryTruck.countItemStock(item1.getName()));
 		
 	}
 	
-	/* Test 4: Counts the trucks current cargo
+	/* 
+	 * Test 3: Counts the trucks current cargo
 	 */
-	@Test public void countTruckStockTest() throws OrdinaryTruckException  {
+	@Test 
+	public void countTruckStockTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 				
 		//Put some items on the truck 
-		truckStock.loadOnTruck(item1, 56);
-		truckStock.loadOnTruck(item2, 104);
+		ordinaryTruck.loadOnTruck(item1, 56);
+		ordinaryTruck.loadOnTruck(item2, 104);
 		
 		//Check the number of items on the truck
 		assertEquals(160, ordinaryTruck.countAllStock());
@@ -92,33 +98,37 @@ public class OrdinaryTruckTest {
 		
 	}
 	
-	/* Test 5: Calculate the cost of the truck
+	/* 
+	 * Test 4: Calculate the cost of the truck
 	 */
-	@Test public void getTruckCostTest() throws OrdinaryTruckException  {
+	@Test 
+	public void getTruckCostTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
 		//Put some items on the truck 
-		truckStock.loadOnTruck(item1, 400);
-		truckStock.loadOnTruck(item2, 100);
+		ordinaryTruck.loadOnTruck(item1, 400);
+		ordinaryTruck.loadOnTruck(item2, 100);
 		
 		
 		//Check the cost is correct 
-		assertEquals(87500, ordinaryTruck.getCost());
+		assertEquals(875, ordinaryTruck.getCost(), 1.0);
 		
 	}
 	
 	
-	/* Test 6: List the cargo currently on the truck
-	 *Hint: Use .toSrting()
+	/* 
+	 * Test 5: List the cargo currently on the truck
+	 * Hint: Use .toSrting()
 	 */
-	@Test public void listCargoTest() throws OrdinaryTruckException  {
+	@Test 
+	public void listCargoTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
 		//Put some items on the truck 
-		truckStock.loadOnTruck(item1, 400);
-		truckStock.loadOnTruck(item2, 100);
+		ordinaryTruck.loadOnTruck(item1, 400);
+		ordinaryTruck.loadOnTruck(item2, 100);
 		
 		
 		//Check current items on the truck
@@ -127,27 +137,29 @@ public class OrdinaryTruckTest {
 		
 	}
 	
-	/* Test 7: Throw error if temp controlled item is put on truck
+	/* 
+	 * Test 6: Throw error if temp controlled item is put on truck
 	 */
-	@Test(expected = OrdinaryTruckException.class)
-	public void throwTempErrorTest() throws OrdinaryTruckException  {
+	@Test(expected = DeliveryException.class)
+	public void throwTempErrorTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
 		//Put a temperature controlled item on the truck
-		truckStock.loadOnTruck(item3, 1);
+		ordinaryTruck.loadOnTruck(item3, 1);
 
 	}
 	
-	/* Test 8: Throw error if no room left on truck but item is trying to be loaded
+	/* 
+	 * Test 7: Throw error if no room left on truck but item is trying to be loaded
 	 */
-	@Test(expected = OrdinaryTruckException.class)
-	public void truckFullTest() throws OrdinaryTruckException  {
+	@Test(expected = DeliveryException.class)
+	public void truckFullTest() throws DeliveryException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
 		//Load too man items onto truck
-		truckStock.loadOnTruck(item1, 1001);
+		ordinaryTruck.loadOnTruck(item1, 1001);
 		
 	}
 	

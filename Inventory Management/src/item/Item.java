@@ -13,10 +13,23 @@ public class Item implements Comparable<Item>{
 	private int sellPrice;
 	private int reorderPoint;
 	private int reorderAmount;
-	private Object temperature;
+	private int temperature;
+	private boolean requiresTemperature;
 	
 	//Constructor 
-	public Item(String name, int cost, int sellPrice, int reorderPoint, int reorderAmount, Object temperature) {
+	public Item(String name, int cost, int sellPrice, int reorderPoint, int reorderAmount) {
+		// TODO Auto-generated constructor stub
+		this.setName(name);
+		this.setCost(cost);
+		this.setSellPrice(sellPrice);
+		this.setReorderPoint(reorderPoint);
+		this.setReorderAmount(reorderAmount);
+		//this.setTemperature(temperature);
+		this.setRequiresTemperature(false);
+	}
+	
+	//Constructor 
+	public Item(String name, int cost, int sellPrice, int reorderPoint, int reorderAmount, int temperature) {
 		// TODO Auto-generated constructor stub
 		this.setName(name);
 		this.setCost(cost);
@@ -24,6 +37,7 @@ public class Item implements Comparable<Item>{
 		this.setReorderPoint(reorderPoint);
 		this.setReorderAmount(reorderAmount);
 		this.setTemperature(temperature);
+		this.setRequiresTemperature(true);
 	}
 	
 	//Methods
@@ -101,15 +115,23 @@ public class Item implements Comparable<Item>{
 	/**
 	 * @return the temperature of the item
 	 */
-	public Object getTemperature() {
+	public int getTemperature() {
 		return temperature;
 	}
 
 	/**
 	 * @param temperature to be set for the item
 	 */
-	public void setTemperature(Object temperature) {
+	public void setTemperature(int temperature) {
 		this.temperature = temperature;
+	}
+	
+	public void setRequiresTemperature(boolean choice) {
+		this.requiresTemperature = choice;
+	}
+	
+	public boolean getRequiresTemperature() {
+		return requiresTemperature;
 	}
 	
 	/**

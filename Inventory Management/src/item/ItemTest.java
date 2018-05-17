@@ -36,16 +36,16 @@ public class ItemTest {
 		int sellPrice = 3;
 		int reorderPoint = 225;
 		int reorderAmount = 300;
-		Object temperature = null;
+		//Object temperature = null;
 		
-		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount, temperature);
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
 		
 		assertEquals(name, item.getName());
 		assertEquals(cost, item.getCost());
 		assertEquals(sellPrice, item.getSellPrice());
 		assertEquals(reorderPoint, item.getReorderPoint());
 		assertEquals(reorderAmount, item.getReorderAmount());
-		assertEquals(temperature, item.getTemperature());
+		//assertEquals(temperature, item.getTemperature());
 	}
 	
 	/*
