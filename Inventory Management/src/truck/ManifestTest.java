@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import item.Item;
+
 public class ManifestTest {
 
 	/* Test 0: Declaring Manifest objects
@@ -15,6 +17,7 @@ public class ManifestTest {
 	Truck truck1 = new OrdinaryTruck();
 	Truck truck2 = new OrdinaryTruck();
 	Truck truck3 = new RefrigeratedTruck();
+	Item item1 = new Item("a", 1, 2, 3, 4, 5);
 
 
 	/* Test 1: Constructing a Manifest object
@@ -56,13 +59,11 @@ public class ManifestTest {
 		assertEquals(cost, manifest.getTotalCost());
 	}
 	
-	/* Test 4: List the manifest
+					
+	//Export Test
+	/* Test 4: Export Manifest to string for CSV
 	 */
-	
-	/* Test 6: List the manifest
-	 *Hint: Use .toSrting()
-	 */
-	@Test public void listManifestTest() throws ManifestException  {
+	@Test public void exportManifestTest() throws ManifestException {
 		//Create new manifest
 		manifest = new Manifest();
 		
@@ -71,19 +72,31 @@ public class ManifestTest {
 		manifest.addTruck(truck2);
 		manifest.addTruck(truck3);
 		
+		String theString = "";
+		theString = "truck1,truck2,truck3";
 		
-		//Check current items on the truck
-		assertEquals("truck1,truck2,truck3", ordinaryTruck.listManifest());
+		//Check the CSV is created correctly
+		assertEquals(theString,manifest.toString());
+	}
+	
+	//Get non-full truck test
+	@Test public void nonFullTruckTest() throws ManifestException {
+		//Create new manifest
+		manifest = new Manifest();
+		
+		//Load Truck 2
+		truck2.loadOnTruck(item1, 1000);
 				
+		//Add trucks
+		manifest.addTruck(truck1);
+		manifest.addTruck(truck2);
+		
+		assertEquals(truck1, manifest.getNonFullTruck());
+		
 		
 	}
 	
 	
 
-	//Testing includes creating trucks and adding them to a manifest. keeping track of each 
-	//truck object, possibly in an array, and being able to access each objects attributes
-	//for example, truckArray[4].cost or truckArray[5].maxTempearature etc.....
-	
-	//other tests may include operations performed on the manifest.
 
 }

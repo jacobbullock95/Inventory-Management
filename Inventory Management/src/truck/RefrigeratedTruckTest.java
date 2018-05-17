@@ -85,6 +85,7 @@ public class RefrigeratedTruckTest {
 		
 		//Check the number of items on the truck
 		assertEquals(160, refrigeratedTruck.countAllStock());
+		assertEquals(640, refrigeratedTruck.getRemainingSpace());
 		
 	}
 	
