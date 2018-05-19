@@ -94,6 +94,7 @@ public class OrdinaryTruckTest {
 		
 		//Check the number of items on the truck
 		assertEquals(160, ordinaryTruck.countAllStock());
+		assertEquals(840, ordinaryTruck.getRemainingSpace());
 		
 	}
 	
@@ -161,6 +162,7 @@ public class OrdinaryTruckTest {
 		ordinaryTruck.loadOnTruck(item1, 1001);
 		
 	}
+	
 	
 
 }

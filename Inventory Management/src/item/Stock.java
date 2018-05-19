@@ -78,7 +78,7 @@ public class Stock {
 	public Item getItemByName(String itemName) {
 		Item theItem = null;
 		for (Item item : stock.keySet()) {
-			if(item.getName() == itemName) {
+			if(item.getName().equals(itemName)) {
 				theItem = item;
 				break;
 			}
@@ -134,4 +134,5 @@ public class Stock {
 
 	
 }
+
 
