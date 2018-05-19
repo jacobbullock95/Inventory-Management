@@ -11,7 +11,7 @@ public class Store {
 	
 	//Private Variables
 	private String name = "SuperMart";
-	private int capital = 100000;
+	private double capital = 100000.00;
 	private Stock inventory = new Stock();	
 	
 	private static Store instance = null;
@@ -61,28 +61,28 @@ public class Store {
 	/**
 	 * @return the stores capital
 	 */
-	public int getCapital() {
+	public double getCapital() {
 		return capital;
 	}
 
 	/**
 	 * @param capital sets the stores capital
 	 */
-	public void setCapital(int initialCapital) {
+	public void setCapital(double initialCapital) {
 		this.capital = initialCapital;
 	}
 
 	/**
-	 * @param profit is the amount the stores capital should be increased
+	 * @param d is the amount the stores capital should be increased
 	 */
-	public void profit(int profit) {
-		this.capital += profit;
+	public void profit(double d) {
+		this.capital += d;
 	}
 
 	/**
-	 * @param loss is the amount the stores capital should be decreased
+	 * @param d is the amount the stores capital should be decreased
 	 */
-	public void loss(int loss) {
-		this.capital -= loss;
+	public void loss(double d) {
+		this.capital -= d;
 	}
 }

@@ -27,8 +27,6 @@ public class RefrigeratedTruckTest {
 	 */
 	
 	//Test class variables 
-	private Item item1;
-	private Item item2;
 	private Item item3;
 	private Item item4;
 	
@@ -45,8 +43,6 @@ public class RefrigeratedTruckTest {
 	@Before 
 	public void setUpRefrigeratedTruckTest() {
 		refrigeratedTruck = new RefrigeratedTruck();
-		item1 = new Item("rice",2,3,225,300);
-		item2 = new Item("beans",4,6,450,525);
 		item3 = new Item("milk",2,3,300,425,3);
 		item4 = new Item("ice cream",8,14,175,250,-20);
 	}
@@ -108,7 +104,7 @@ public class RefrigeratedTruckTest {
 		
 		
 		//Check the cost is correct 
-		assertEquals(1732.98, refrigeratedTruck.getCost(), 1.0);
+		assertEquals(3332.98, refrigeratedTruck.getCost(), 1.0);
 		
 	}
 	
@@ -121,12 +117,12 @@ public class RefrigeratedTruckTest {
 		refrigeratedTruck = new RefrigeratedTruck();
 		
 		//Put some items on the truck 
-		refrigeratedTruck.loadOnTruck(item1, 400);
-		refrigeratedTruck.loadOnTruck(item2, 100);
+		refrigeratedTruck.loadOnTruck(item3, 400);
+		refrigeratedTruck.loadOnTruck(item4, 100);
 		
 		
 		//Check current items on the truck
-		assertEquals("item1,item2,400,100", refrigeratedTruck.currentCargo());
+		assertEquals(">Refrigerated\nice cream,100\nmilk,400\n", refrigeratedTruck.toString());
 				
 		
 	}

@@ -4,10 +4,12 @@ package truck;
 
 import static org.junit.Assert.*;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
 import item.Item;
+import truck.Manifest;
 
 public class ManifestTest {
 
@@ -19,7 +21,7 @@ public class ManifestTest {
 	Truck truck1 = new OrdinaryTruck();
 	Truck truck2 = new OrdinaryTruck();
 	Truck truck3 = new RefrigeratedTruck();
-	Item item1 = new Item("a", 1, 2, 3, 4, 5);
+	Item item1 = new Item("a", 1, 2, 3, 4);
 
 
 
@@ -85,7 +87,7 @@ public class ManifestTest {
 		manifest.addTruck(truck3);
 		
 		String theString = "";
-		theString = "truck1,truck2,truck3";
+		theString = ">Ordinary\n>Ordinary\n>Refrigerated\n";
 		
 		//Check the CSV is created correctly
 		assertEquals(theString,manifest.toString());
@@ -104,7 +106,7 @@ public class ManifestTest {
 		manifest.addTruck(truck1);
 		manifest.addTruck(truck2);
 		
-		assertEquals(truck1, manifest.getNonFullTruck());
+		assertEquals(truck1, manifest.getNonFullTruck(false));
 		
 		
 	}

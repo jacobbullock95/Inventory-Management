@@ -112,7 +112,7 @@ public class OrdinaryTruckTest {
 		
 		
 		//Check the cost is correct 
-		assertEquals(875, ordinaryTruck.getCost(), 1.0);
+		assertEquals(2075, ordinaryTruck.getCost(), 1.0);
 		
 	}
 	
@@ -128,11 +128,10 @@ public class OrdinaryTruckTest {
 		
 		//Put some items on the truck 
 		ordinaryTruck.loadOnTruck(item1, 400);
-		ordinaryTruck.loadOnTruck(item2, 100);
 		
 		
 		//Check current items on the truck
-		assertEquals("item1,item2,400,100", ordinaryTruck.currentCargo());
+		assertEquals(">Ordinary\nrice,400\n", ordinaryTruck.toString());
 				
 		
 	}

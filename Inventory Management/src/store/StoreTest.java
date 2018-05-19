@@ -51,7 +51,7 @@ public class StoreTest {
 		
 		assertEquals(storeName, store.getName());
 		assertEquals(inventory, store.getInventory()); 	
-		assertEquals(initialCapital, store.getCapital());
+		assertEquals(initialCapital, store.getCapital(), 0.99);
 	}
 	
 	/*
@@ -81,7 +81,7 @@ public class StoreTest {
 		
 		assertEquals(storeName, store.getName());
 		assertEquals(inventory, store.getInventory());
-		assertEquals(initialCapital, store.getCapital());
+		assertEquals(initialCapital, store.getCapital(), 0.99);
 	}
 	
 	
@@ -102,12 +102,12 @@ public class StoreTest {
 		// Capital can be gained, e.g. here, 10000 of profit is being recorded
 		store.profit(10000.01);
 				
-		assertEquals(initialCapital + 10000.01, store.getCapital());
+		assertEquals(initialCapital + 10000.01, store.getCapital(), 0.99);
 		
 		// Capital can be lost, e.g. here, 30000 of cost is being recorded
 		store.loss(30000.33);
 						
-		assertEquals(initialCapital + 10000.01 - 30000.33, store.getCapital());
+		assertEquals(initialCapital + 10000.01 - 30000.33, store.getCapital(), 0.99);
 	}
 
 }
