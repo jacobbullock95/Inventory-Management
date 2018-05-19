@@ -93,7 +93,7 @@ public class ManifestTest {
 	
 	/* Test 4: Get the non full truck and not the full one.
 	*/
-	@Test public void nonFullTruckTest() throws ManifestException {
+	@Test public void nonFullTruckTest() throws DeliveryException {
 		//Create new manifest
 		manifest = new Manifest();
 		
