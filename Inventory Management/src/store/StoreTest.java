@@ -100,14 +100,14 @@ public class StoreTest {
 		store = Store.getInstance();
 		
 		// Capital can be gained, e.g. here, 10000 of profit is being recorded
-		store.profit(10000);
+		store.profit(10000.01);
 				
-		assertEquals(initialCapital + 10000, store.getCapital());
+		assertEquals(initialCapital + 10000.01, store.getCapital());
 		
 		// Capital can be lost, e.g. here, 30000 of cost is being recorded
-		store.loss(30000);
+		store.loss(30000.33);
 						
-		assertEquals(initialCapital + 10000 - 30000, store.getCapital());
+		assertEquals(initialCapital + 10000.01 - 30000.33, store.getCapital());
 	}
 
 }
