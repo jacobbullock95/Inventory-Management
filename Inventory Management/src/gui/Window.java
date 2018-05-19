@@ -1,4 +1,3 @@
-
 package gui;
 
 import java.awt.BorderLayout;
@@ -25,6 +24,8 @@ import csv.ParseSales;
 import item.Item;
 import item.Stock;
 import store.Store;
+import truck.DeliveryException;
+import truck.Manifest;
 
 public class Window extends JFrame implements ActionListener, Runnable {
 	
@@ -33,6 +34,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	private JButton btnLoadItem;
 	private JButton btnLoadSales;
 	private JButton btnLoadManifest;
+	private JButton btnGenManifest;
 	private JPanel pnlBtn;
 	
 	private static Store store;
@@ -75,6 +77,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		store.setName(storeName);
 		store.setCapital(initialCapital);
 		
+		System.out.println("Starting Capital: " + store.getCapital());
+		
 		JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new Window("Hello"));
 
@@ -98,7 +102,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnLoadItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
-				String file = createFileChooser();
+				String file = createFileChooser(true);
 				ParseItems parser = new ParseItems(file);
 				parser.parseResults(store.getInventory()); 
 			}
@@ -109,9 +113,12 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnLoadSales.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String file = createFileChooser();
+				String file = createFileChooser(true);
 				ParseSales parser = new ParseSales(file);
-				parser.parseResults(store.getInventory());
+				store.profit(parser.parseResults(store.getInventory()));
+				
+				System.out.println(store.getCapital());
+				
 			}
 	    });
 	    
@@ -120,9 +127,43 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnLoadManifest.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String file = createFileChooser();
+				String file = createFileChooser(true);
 				ParseManifest parser = new ParseManifest(file);
-				parser.parseResults(store.getInventory());
+				
+				Manifest manifest;
+				try {
+					manifest = parser.parseResults(store.getInventory());
+					store.loss(manifest.getTotalCost());
+					
+					System.out.println("Total Cost: " + manifest.getTotalCost());
+					
+				} catch (DeliveryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				System.out.println(store.getCapital());
+			}
+	    });
+	    
+	    btnGenManifest = createButton("Export Manifest");
+	    
+	    btnGenManifest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String file = createFileChooser(false);
+				Manifest manifest = new Manifest(store.getInventory());
+				
+				try {
+					manifest.CalculateManifest();
+				} catch (DeliveryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				manifest.exportManifest(file);
 			}
 	    });
 	    
@@ -147,9 +188,17 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    this.setVisible(true);
 	}
 	
-	public String createFileChooser() {
+	public String createFileChooser(boolean openDialog) {
 		final JFileChooser fc =  new JFileChooser();
-	    int returnVal =  fc.showOpenDialog(this);
+		
+		int returnVal;
+		
+		if (openDialog) {
+			returnVal =  fc.showOpenDialog(this);
+		} else {
+			returnVal =  fc.showSaveDialog(this);
+		}
+	    
 	    
 	    
 	    if (returnVal==JFileChooser.APPROVE_OPTION) {
@@ -191,7 +240,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    addToPanel(pnlBtn, btnLoadItem,  constraints, 0, 0, 2, 1); 
 	    addToPanel(pnlBtn, btnLoadSales, constraints, 3, 0, 2, 1); 
 	    addToPanel(pnlBtn, btnLoadManifest, constraints, 0, 2, 2, 1); 
-//	    addToPanel(pnlBtn, btnSwitch,constraints,3,2,2,1); 	
+	    addToPanel(pnlBtn, btnGenManifest, constraints, 3, 2, 2, 1); 	
 	}
 	
 	private void addToPanel(JPanel jp, Component c, GridBagConstraints constraints, int x, int y, int w, int h) {  
@@ -203,4 +252,3 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	}
 
 }
-

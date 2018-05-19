@@ -27,6 +27,10 @@ public abstract class Truck {
 	
 	
 	
+	public abstract String toString();
+	
+	
+	
 	public Stock getCargo() {
 		return cargo;
 	}
@@ -53,6 +57,12 @@ public abstract class Truck {
 	
 	public String currentCargo() {
 		return "s";
+	}
+	
+	
+	
+	public int getRemainingSpace() {
+		return capacity - countAllStock();
 	}
 	
 	
