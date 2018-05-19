@@ -5,6 +5,7 @@ package truck;
 import java.lang.Math;
 
 import item.Item;
+import item.Stock;
 
 public class RefrigeratedTruck extends Truck {
 	
@@ -23,7 +24,20 @@ public class RefrigeratedTruck extends Truck {
 
 	@Override
 	public double getCost() {
+		
+		Stock cargo = this.getCargo();
+		
+		// Cost of truck
 		double cost = 900 + (200 * Math.pow(0.7, temperature/5));
+		
+		// Cost of cargo
+		for (int i = 0; i < cargo.uniqueItems(); i++) {
+			
+			Item item = cargo.getItemByIndex(i);
+			
+			cost += item.getCost() * cargo.currentQuantity(item.getName());
+		}
+		
 		return cost;
 		
 	}
@@ -52,6 +66,8 @@ public class RefrigeratedTruck extends Truck {
 					temperature = item.getTemperature();
 					this.getCargo().addItem(item, quantity);
 				}
+			} else {
+				this.getCargo().addItem(item, quantity);
 			}
 		} else {
 			// Add item to truck cargo
@@ -64,6 +80,28 @@ public class RefrigeratedTruck extends Truck {
 	
 	public int getTemperature() {
 		return temperature;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		
+		Stock cargo = this.getCargo();
+		String str = ">Refrigerated\n";
+		
+		String name = "";
+		String quantity = "";
+		
+		for (int i = 0; i < cargo.uniqueItems(); i++) {
+			
+			name = cargo.getItemByIndex(i).getName();
+			quantity = String.valueOf(cargo.currentQuantity(name));
+			str += name + "," + quantity + "\n";
+		}
+		
+		
+		return str;
 	}
 
 }

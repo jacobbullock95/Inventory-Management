@@ -30,6 +30,12 @@ public class CSVWrite {
 		Write();
 	}
 	
+	public CSVWrite(String file, String data) {
+		this.file = file;
+		
+		WriteString(data);
+	}
+	
 	
 	/**
 	 * The writes the data to the CSV file
@@ -57,6 +63,19 @@ public class CSVWrite {
 				fw.write(line);
 			}
 			
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public void WriteString(String data) {
+		
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(data);
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,18 +1,43 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GraphicsConfiguration;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import csv.ParseItems;
+import csv.ParseManifest;
+import csv.ParseSales;
+import item.Item;
+import item.Stock;
+import store.Store;
+import truck.DeliveryException;
+import truck.Manifest;
 
 public class Window extends JFrame implements ActionListener, Runnable {
 	
 	public static final int WIDTH = 300;
 	public static final int HEIGHT = 200;
+	private JButton btnLoadItem;
+	private JButton btnLoadSales;
+	private JButton btnLoadManifest;
+	private JButton btnGenManifest;
+	private JPanel pnlBtn;
+	
+	private static Store store;
 
 //	public Window() throws HeadlessException {
 //		// TODO Auto-generated constructor stub
@@ -25,7 +50,6 @@ public class Window extends JFrame implements ActionListener, Runnable {
 
 	public Window(String title) throws HeadlessException {
 		super(title);
-		// TODO Auto-generated constructor stub
 	}
 
 //	public Window(String title, GraphicsConfiguration gc) {
@@ -35,7 +59,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 
 	@Override
 	public void run() {
-		createGUI();
+		createWindow();
 
 	}
 
@@ -46,23 +70,104 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	}
 
 	public static void main(String[] args) {
+		
+		String storeName = "SuperMart";
+		int initialCapital = 100000;
+		store = Store.getInstance();
+		store.setName(storeName);
+		store.setCapital(initialCapital);
+		
+		System.out.println("Starting Capital: " + store.getCapital());
+		
 		JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new Window("Hello"));
 
 	}
 	
-	private void createGUI() {
+	private void createWindow() {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());
 	    
+	    
+	    
 //	    pnlDisplay = createPanel(Color.WHITE);
 //	    pnlTwo = createPanel(Color.LIGHT_GRAY);
-//	    pnlBtn = createPanel(Color.LIGHT_GRAY);
+	    pnlBtn = createPanel(Color.LIGHT_GRAY);
 //	    pnlFour = createPanel(Color.LIGHT_GRAY);
 //	    pnlFive = createPanel(Color.LIGHT_GRAY);
 //	    
-//	    btnLoad = createButton("Load");
+	    btnLoadItem = createButton("Load Item Properties");
+	    
+	    btnLoadItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {				
+				String file = createFileChooser(true);
+				ParseItems parser = new ParseItems(file);
+				parser.parseResults(store.getInventory()); 
+			}
+	    });
+	    
+	    btnLoadSales = createButton("Load Sales Log");
+	    
+	    btnLoadSales.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String file = createFileChooser(true);
+				ParseSales parser = new ParseSales(file);
+				store.profit(parser.parseResults(store.getInventory()));
+				
+				System.out.println(store.getCapital());
+				
+			}
+	    });
+	    
+	    btnLoadManifest = createButton("Load Manifest");
+	    
+	    btnLoadManifest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String file = createFileChooser(true);
+				ParseManifest parser = new ParseManifest(file);
+				
+				Manifest manifest;
+				try {
+					manifest = parser.parseResults(store.getInventory());
+					store.loss(manifest.getTotalCost());
+					
+					System.out.println("Total Cost: " + manifest.getTotalCost());
+					
+				} catch (DeliveryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				System.out.println(store.getCapital());
+			}
+	    });
+	    
+	    btnGenManifest = createButton("Export Manifest");
+	    
+	    btnGenManifest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String file = createFileChooser(false);
+				Manifest manifest = new Manifest(store.getInventory());
+				
+				try {
+					manifest.CalculateManifest();
+				} catch (DeliveryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				manifest.exportManifest(file);
+			}
+	    });
+	    
+	    
 //	    btnUnload = createButton("Unload");
 //	    btnFind = createButton("Find");
 //	    btnSwitch = createButton("Switch");
@@ -72,15 +177,78 @@ public class Window extends JFrame implements ActionListener, Runnable {
 //	    pnlDisplay.setLayout(new BorderLayout());
 //	    pnlDisplay.add(areDisplay, BorderLayout.CENTER);
 //	 
-//	    layoutButtonPanel(); 
+	    layoutButtonPanel(); 
 //	    
 //	    this.getContentPane().add(pnlDisplay,BorderLayout.CENTER);
 //	    this.getContentPane().add(pnlTwo,BorderLayout.NORTH);
-//	    this.getContentPane().add(pnlBtn,BorderLayout.SOUTH);
+	    this.getContentPane().add(pnlBtn,BorderLayout.SOUTH);
 //	    this.getContentPane().add(pnlFour,BorderLayout.EAST);
 //	    this.getContentPane().add(pnlFive,BorderLayout.WEST);
 	    //repaint(); 
 	    this.setVisible(true);
+	}
+	
+	public String createFileChooser(boolean openDialog) {
+		final JFileChooser fc =  new JFileChooser();
+		
+		int returnVal;
+		
+		if (openDialog) {
+			returnVal =  fc.showOpenDialog(this);
+		} else {
+			returnVal =  fc.showSaveDialog(this);
+		}
+	    
+	    
+	    
+	    if (returnVal==JFileChooser.APPROVE_OPTION) {
+	    	File  file =  fc.getSelectedFile();
+	    	String filename = file.getAbsolutePath();
+	    	return filename;
+	    } else if (returnVal == JFileChooser.CANCEL_OPTION) {
+	    	
+	    }
+	    
+	    return "";
+	}
+	
+	private JButton createButton(String str) {
+		JButton jb = new JButton(str); 
+		jb.addActionListener(this);
+		return jb; 
+	}
+	
+	private JPanel createPanel(Color c) {
+		JPanel jp = new JPanel();
+		jp.setBackground(c);
+		return jp;
+	}
+	
+	private void layoutButtonPanel() {
+		GridBagLayout layout = new GridBagLayout();
+	    pnlBtn.setLayout(layout);
+	    
+	    // Add components to grid
+	    GridBagConstraints constraints = new GridBagConstraints(); 
+	    
+	    // Defaults
+	    constraints.fill = GridBagConstraints.NONE;
+	    constraints.anchor = GridBagConstraints.CENTER;
+	    constraints.weightx = 100;
+	    constraints.weighty = 100;
+	    
+	    addToPanel(pnlBtn, btnLoadItem,  constraints, 0, 0, 2, 1); 
+	    addToPanel(pnlBtn, btnLoadSales, constraints, 3, 0, 2, 1); 
+	    addToPanel(pnlBtn, btnLoadManifest, constraints, 0, 2, 2, 1); 
+	    addToPanel(pnlBtn, btnGenManifest, constraints, 3, 2, 2, 1); 	
+	}
+	
+	private void addToPanel(JPanel jp, Component c, GridBagConstraints constraints, int x, int y, int w, int h) {  
+		constraints.gridx = x;
+		constraints.gridy = y;
+		constraints.gridwidth = w;
+		constraints.gridheight = h;
+		jp.add(c, constraints);
 	}
 
 }
