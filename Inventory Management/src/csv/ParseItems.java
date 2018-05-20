@@ -5,6 +5,7 @@ import java.util.List;
 
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 public class ParseItems {
 	
@@ -28,7 +29,7 @@ public class ParseItems {
 //		parseResults();
 	}
 	
-	public void parseResults(Stock stock) {
+	public void parseResults(Stock stock) throws StockException {
 		
 		for (int i = 1; i < result.size(); i++) {
 			

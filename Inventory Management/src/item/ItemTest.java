@@ -4,7 +4,11 @@ package item;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import item.StockException;
 
 public class ItemTest {
 	
@@ -12,9 +16,15 @@ public class ItemTest {
 	
 	/* 
 	 * Items have 5 properties: name, cost to make, sell price, reorder point, reorder amount and temperature
-	 * Some items do not require to be kept at a certain temperature an thus temperature == null
+	 * Some items do not require to be kept at a certain temperature and thus temperature is an optional parameter
 	 * Item definitions are loaded in through a csv into the application, see item_properties.csv on blackboard
 	 */ 
+	
+	/*
+	 * No exceptions are expected
+	 */
+	@Rule
+	public ExpectedException thrown= ExpectedException.none();
 	
 	/*
 	 * This function is called before all tests
@@ -36,7 +46,6 @@ public class ItemTest {
 		int sellPrice = 3;
 		int reorderPoint = 225;
 		int reorderAmount = 300;
-		//Object temperature = null;
 		
 		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
 		
@@ -45,7 +54,6 @@ public class ItemTest {
 		assertEquals(sellPrice, item.getSellPrice());
 		assertEquals(reorderPoint, item.getReorderPoint());
 		assertEquals(reorderAmount, item.getReorderAmount());
-		//assertEquals(temperature, item.getTemperature());
 	}
 	
 	/*
@@ -71,5 +79,5 @@ public class ItemTest {
 		assertEquals(reorderAmount, item.getReorderAmount());
 		assertEquals(temperature, item.getTemperature());
 	}
-
+	
 }
