@@ -1,7 +1,5 @@
 package item;
 
-/* A trivial exception class for the Movie List program.
- */
 @SuppressWarnings("serial")
 public class StockException extends Exception {
 

@@ -1,7 +1,6 @@
 package csv;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,8 +25,9 @@ public class CSVRead {
 	 * Calls Read() function to read the CSV file
 	 * @param file This is the location and name of the CSV file stored in a string
 	 * @param headers These are the header names of the CSV file stored in an ArrayList of Strings
+	 * @throws IOException 
 	 */
-	public CSVRead(String file, List<String> headers) {
+	public CSVRead(String file, List<String> headers) throws IOException {
 		this.file = file;
 		this.headers = headers;
 		
@@ -41,8 +41,9 @@ public class CSVRead {
 	 * On each line, the String is split into sections at comma locations
 	 * These are then stored in a new row in the ArrayList
 	 * @return Returns the data read from the CSV file in an ArrayList of Array of String
+	 * @throws IOException 
 	 */
-	public List<String[]> Read() {
+	public List<String[]> Read() throws IOException {
 		String line;
 		int size = headers.size();
 		int csvLength = 0;
@@ -56,29 +57,25 @@ public class CSVRead {
 			result.get(0)[i] = headers.get(i);
 		}
 		
-		try {
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+		FileReader fr = new FileReader(file);
+		BufferedReader br = new BufferedReader(fr);
+		
+		while((line = br.readLine()) != null) {
 			
-			while((line = br.readLine()) != null) {
-				
-				String[] splitLine = line.split(comma);				
-				
-				// Increment CSV length
-				csvLength++;
-				
-				// Add CSV data to ArrayList
-				result.add(new String[size]);
-				for (int i = 0; i < splitLine.length; i++) {
-					result.get(csvLength)[i] = splitLine[i];
-				}
+			String[] splitLine = line.split(comma);				
+			
+			// Increment CSV length
+			csvLength++;
+			
+			// Add CSV data to ArrayList
+			result.add(new String[size]);
+			for (int i = 0; i < splitLine.length; i++) {
+				result.get(csvLength)[i] = splitLine[i];
 			}
-			
-			br.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		
+		br.close();
+
 		
 		return result;
 	}

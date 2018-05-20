@@ -2,6 +2,7 @@ package csv;
 
 import static org.junit.Assert.*;
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -9,7 +10,7 @@ import org.junit.Test;
 public class CSVWriteTest {
 
 	@Test
-	public void test() {
+	public void test() throws IOException {
 		
 		String file = "test.csv";
 		
@@ -25,7 +26,7 @@ public class CSVWriteTest {
 		data.add(b);
 		data.add(a);
 		
-		CSVWrite writer = new CSVWrite(file, data);
+		new CSVWrite(file, data);
 		
 		assertEquals(1, 1);
 	}

@@ -1,5 +1,6 @@
 package truck;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import csv.CSVWrite;
 import item.Item;
@@ -214,8 +215,9 @@ public class Manifest {
 	/**
 	 * Exports the manifest to a CSV document at a specified location
 	 * @param file is the location where the CSV will be saved
+	 * @throws IOException 
 	 */
-	public void exportManifest(String file) {
+	public void exportManifest(String file) throws IOException {
 		new CSVWrite(file, toString());
 	}
 	
@@ -225,7 +227,7 @@ public class Manifest {
 	 * @param cooled indicates a refrigerated truck is required otherwise a truck of any type will be returned
 	 * @return A truck of rquested type
 	 */
-	private Truck createTruck(boolean cooled) {
+	public Truck createTruck(boolean cooled) {
 		
 		Truck truck;
 		

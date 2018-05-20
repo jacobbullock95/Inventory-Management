@@ -3,6 +3,7 @@ package csv;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class CSVReadTest {
 	
 
 	@Test
-	public void csvReadTestA() {
+	public void csvReadTestA() throws IOException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");
@@ -37,7 +38,7 @@ public class CSVReadTest {
 	
 	
 	@Test
-	public void csvReadTestB() {
+	public void csvReadTestB() throws IOException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");

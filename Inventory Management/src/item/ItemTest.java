@@ -8,8 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import item.StockException;
-
 public class ItemTest {
 	
 	Item item;

@@ -1,5 +1,6 @@
 package csv;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import item.Stock;
@@ -7,30 +8,53 @@ import truck.DeliveryException;
 import truck.Manifest;
 import truck.Truck;
 
+
+/**
+ * Reads in and parses a CSV document into a Manifest object
+ * @author Jesse Haviland
+ */
 public class ParseManifest {
 	
 	CSVRead reader;
 	Manifest manifest;
 	List<String[]> result;
 
-	public ParseManifest(String file) {
+	
+	/**
+	 * Initialises the class, creates the headers list and reads the CSV file
+	 * @param file indicating the location and name of the CSV file
+	 * @throws IOException
+	 */
+	public ParseManifest(String file) throws IOException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");
 		headers.add("sales");
 		
-		
 		reader = new CSVRead(file, headers);
 		result = reader.getResult();
 	}
 	
-	public Manifest parseResults(Stock stock) throws DeliveryException {
+	
+	/**
+	 * Loops through the data read from the CSV file and adds it into a manfest object
+	 * @param stock to add items to from the trucks cargo
+	 * @return The completed manifest
+	 * @throws DeliveryException
+	 * @throws CSVFormatException
+	 */
+	public Manifest parseResults(Stock stock) throws DeliveryException, CSVFormatException {
 		
 		final boolean COOLED = true;
 		final boolean NOT_COOLED = false;
 		
 		manifest = new Manifest(stock);
 		Truck truck;
+		
+		if (result.size() < 3) {
+			// There is no more data here
+			return manifest;
+		}
 		
 		// Ensure truck is always initialised
 		if (result.get(1)[0].equals(">Refrigerated")) {
@@ -49,8 +73,10 @@ public class ParseManifest {
 				
 				if (result.get(i)[0].equals(">Refrigerated")) {
 					truck = manifest.createTruck(COOLED);
-				} else {
+				} else if (result.get(i)[0].equals(">Ordinary")){
 					truck = manifest.createTruck(NOT_COOLED);
+				} else {
+					throw new CSVFormatException("Invalid CSV Format");
 				}
 				
 				// Add new truck to manifest
@@ -59,19 +85,24 @@ public class ParseManifest {
 				// Add items under that truck to the truck
 				
 				String name = result.get(i)[0];
-				int quantity = Integer.parseInt(result.get(i)[1]);
 				
-				truck.loadOnTruck(stock.getItemByName(name), quantity);
-				
-				// Update stock quantity
-				stock.increaseQuantity(name, quantity);
-
+				try {
+					int quantity = Integer.parseInt(result.get(i)[1]);
+					truck.loadOnTruck(stock.getItemByName(name), quantity);
+					stock.increaseQuantity(name, quantity);
+				} catch (NumberFormatException e) {
+					throw new CSVFormatException("Invalid CSV Format");
+				}
 			}
 		}	
 		
 		return manifest;
 	}
 	
+	
+	/**
+	 * @return The result from the CSV read
+	 */
 	public List<String[]> getResult() {
 		return result;
 	}
