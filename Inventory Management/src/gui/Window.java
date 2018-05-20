@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,8 +17,15 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import csv.ParseItems;
 import csv.ParseManifest;
@@ -29,33 +38,30 @@ import truck.Manifest;
 
 public class Window extends JFrame implements ActionListener, Runnable {
 	
-	public static final int WIDTH = 300;
-	public static final int HEIGHT = 200;
+	private static final int WIDTH = 1000;
+	private static final int HEIGHT = 600;
+	
+	private boolean storeInitialised = false;
+	
 	private JButton btnLoadItem;
 	private JButton btnLoadSales;
 	private JButton btnLoadManifest;
 	private JButton btnGenManifest;
+	
+	private JLabel storeNameLabel;
+	private JLabel storeCapLabel;
+	
 	private JPanel pnlBtn;
+	private JPanel pnlLabel;
+	
+	private JScrollPane tableScrollPane;
+	private JTable table;
 	
 	private static Store store;
-
-//	public Window() throws HeadlessException {
-//		// TODO Auto-generated constructor stub
-//	}
-
-//	public Window(GraphicsConfiguration gc) {
-//		super(gc);
-//		// TODO Auto-generated constructor stub
-//	}
 
 	public Window(String title) throws HeadlessException {
 		super(title);
 	}
-
-//	public Window(String title, GraphicsConfiguration gc) {
-//		super(title, gc);
-//		// TODO Auto-generated constructor stub
-//	}
 
 	@Override
 	public void run() {
@@ -88,16 +94,14 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setLayout(new BorderLayout());
+
+	    pnlLabel = createPanel(Color.WHITE);
+	    pnlLabel.setBorder(new EmptyBorder(20, 20, 20, 20));
+	    pnlBtn = createPanel(Color.WHITE);
+	    pnlBtn.setBorder(new EmptyBorder(10, 10, 10, 10));
 	    
-	    
-	    
-//	    pnlDisplay = createPanel(Color.WHITE);
-//	    pnlTwo = createPanel(Color.LIGHT_GRAY);
-	    pnlBtn = createPanel(Color.LIGHT_GRAY);
-//	    pnlFour = createPanel(Color.LIGHT_GRAY);
-//	    pnlFive = createPanel(Color.LIGHT_GRAY);
-//	    
 	    btnLoadItem = createButton("Load Item Properties");
+	    btnLoadItem.setPreferredSize(new Dimension(300, 50));
 	    
 	    btnLoadItem.addActionListener(new ActionListener() {
 			@Override
@@ -105,10 +109,12 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				String file = createFileChooser(true);
 				ParseItems parser = new ParseItems(file);
 				parser.parseResults(store.getInventory()); 
+				addItemsToTable();
 			}
 	    });
 	    
 	    btnLoadSales = createButton("Load Sales Log");
+	    btnLoadSales.setPreferredSize(new Dimension(300, 50));
 	    
 	    btnLoadSales.addActionListener(new ActionListener() {
 			@Override
@@ -116,13 +122,15 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				String file = createFileChooser(true);
 				ParseSales parser = new ParseSales(file);
 				store.profit(parser.parseResults(store.getInventory()));
+				updateItemQuantityTable();
+				storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 				
 				System.out.println(store.getCapital());
-				
 			}
 	    });
 	    
 	    btnLoadManifest = createButton("Load Manifest");
+	    btnLoadManifest.setPreferredSize(new Dimension(300, 50));
 	    
 	    btnLoadManifest.addActionListener(new ActionListener() {
 			@Override
@@ -134,7 +142,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				try {
 					manifest = parser.parseResults(store.getInventory());
 					store.loss(manifest.getTotalCost());
-					
+					updateItemQuantityTable();
+					storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 					System.out.println("Total Cost: " + manifest.getTotalCost());
 					
 				} catch (DeliveryException e) {
@@ -149,6 +158,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    });
 	    
 	    btnGenManifest = createButton("Export Manifest");
+	    btnGenManifest.setPreferredSize(new Dimension(300, 50));
+	    
 	    
 	    btnGenManifest.addActionListener(new ActionListener() {
 			@Override
@@ -167,28 +178,100 @@ public class Window extends JFrame implements ActionListener, Runnable {
 			}
 	    });
 	    
+	    storeNameLabel = new JLabel(store.getName());
+	    storeNameLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+	    storeCapLabel = new JLabel("Current Capital: $" + Double.toString(store.getCapital()));
+	    storeCapLabel.setFont(new Font("Serif", Font.PLAIN, 28));
 	    
-//	    btnUnload = createButton("Unload");
-//	    btnFind = createButton("Find");
-//	    btnSwitch = createButton("Switch");
-//	    
-//	    areDisplay = createTextArea();
-//	    
-//	    pnlDisplay.setLayout(new BorderLayout());
-//	    pnlDisplay.add(areDisplay, BorderLayout.CENTER);
-//	 
+	    createTable();
 	    layoutButtonPanel(); 
-//	    
-//	    this.getContentPane().add(pnlDisplay,BorderLayout.CENTER);
-//	    this.getContentPane().add(pnlTwo,BorderLayout.NORTH);
-	    this.getContentPane().add(pnlBtn,BorderLayout.SOUTH);
-//	    this.getContentPane().add(pnlFour,BorderLayout.EAST);
-//	    this.getContentPane().add(pnlFive,BorderLayout.WEST);
+	    layoutLabelPanel();
+	    
+	    this.getContentPane().add(pnlLabel, BorderLayout.NORTH);
+	    this.getContentPane().add(pnlBtn,   BorderLayout.SOUTH);
+
 	    //repaint(); 
 	    this.setVisible(true);
 	}
 	
-	public String createFileChooser(boolean openDialog) {
+	private void updateItemQuantityTable() {
+		final int QUANTITY_COL = 1;
+		
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		Stock inv = store.getInventory();
+		int tableWidth = 7;
+		int tableHeight = inv.uniqueItems();
+		int rowCount = model.getRowCount();
+		
+		for (int y = 0; y < tableHeight; y++) {
+	    	model.setValueAt(inv.currentQuantity(inv.getItemByIndex(y).getName()), y, QUANTITY_COL);
+	    }
+	}
+	
+	private void addItemsToTable() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		int rowCount = model.getRowCount();
+		
+		for (int i = 0; i < rowCount; i++) {
+			model.removeRow(i);
+		}
+		
+		Stock inv = store.getInventory();
+		int tableWidth = 7;
+		int tableHeight = inv.uniqueItems();
+		
+		Object[] data = new Object[tableWidth];
+	    
+	    for (int y = 0; y < tableHeight; y++) {
+	    	data[0] = inv.getItemByIndex(y).getName();
+	    	data[1] = inv.currentQuantity(inv.getItemByIndex(y).getName());
+	    	data[2] = inv.getItemByIndex(y).getCost();
+	    	data[3] = inv.getItemByIndex(y).getSellPrice();
+	    	data[4] = inv.getItemByIndex(y).getReorderPoint();
+	    	data[5] = inv.getItemByIndex(y).getReorderAmount();
+	    	
+	    	if (inv.getItemByIndex(y).getRequiresTemperature()) {
+	    		data[6] = inv.getItemByIndex(y).getTemperature();
+	    	} else {
+	    		data[6] = "";
+	    	} 	
+	    	
+	    	model.addRow(data);
+	    }
+	}
+	
+	private void createTable() {
+		String[] columnNames = {"Item Name", "Item Quantity", "Manufacturing cost ($)", "Sell Price ($)", "Reorder Point", "Reorder Amount", "Temperature (C)"};
+	    
+	    table = new JTable(null, columnNames);
+	    
+	    DefaultTableModel tableModel = new DefaultTableModel(null, columnNames) {
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	           //all cells false
+	           return false;
+	        }
+	    };
+
+	    table.setModel(tableModel);
+	    
+	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+	    
+	    for (int i = 0; i < 7; i++) {
+	    	table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
+        }
+	    
+	    tableScrollPane = new JScrollPane(table);
+	    tableScrollPane.setBorder(new EmptyBorder(0, 10, 0, 10));
+	    tableScrollPane.setBackground(Color.WHITE);
+	    table.setFillsViewportHeight(true);
+	    
+	    this.getContentPane().add(tableScrollPane,BorderLayout.CENTER);
+	}
+	
+	private String createFileChooser(boolean openDialog) {
 		final JFileChooser fc =  new JFileChooser();
 		
 		int returnVal;
@@ -198,7 +281,6 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		} else {
 			returnVal =  fc.showSaveDialog(this);
 		}
-	    
 	    
 	    
 	    if (returnVal==JFileChooser.APPROVE_OPTION) {
@@ -241,6 +323,23 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    addToPanel(pnlBtn, btnLoadSales, constraints, 3, 0, 2, 1); 
 	    addToPanel(pnlBtn, btnLoadManifest, constraints, 0, 2, 2, 1); 
 	    addToPanel(pnlBtn, btnGenManifest, constraints, 3, 2, 2, 1); 	
+	}
+	
+	private void layoutLabelPanel() {
+		GridBagLayout layout = new GridBagLayout();
+	    pnlLabel.setLayout(layout);
+	    
+	    // Add components to grid
+	    GridBagConstraints constraints = new GridBagConstraints(); 
+	    
+	    // Defaults
+	    constraints.fill = GridBagConstraints.NONE;
+	    constraints.anchor = GridBagConstraints.CENTER;
+	    constraints.weightx = 100;
+	    constraints.weighty = 100;
+	    
+	    addToPanel(pnlLabel, storeNameLabel, constraints, 0, 0, 1, 1);
+	    addToPanel(pnlLabel, storeCapLabel, constraints, 2, 0, 1, 1);
 	}
 	
 	private void addToPanel(JPanel jp, Component c, GridBagConstraints constraints, int x, int y, int w, int h) {  

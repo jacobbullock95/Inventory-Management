@@ -27,8 +27,7 @@ public class OrdinaryTruck extends Truck {
 			
 			cost += item.getCost() * cargo.currentQuantity(item.getName());
 		}
-		
-		
+
 		return cost;
 		
 	}

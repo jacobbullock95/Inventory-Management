@@ -28,7 +28,8 @@ public class RefrigeratedTruck extends Truck {
 		Stock cargo = this.getCargo();
 		
 		// Cost of truck
-		double cost = 900 + (200 * Math.pow(0.7, temperature/5));
+		double exp = temperature/5.0;
+		double cost = 900 + (200 * Math.pow(0.7, exp));
 		
 		// Cost of cargo
 		for (int i = 0; i < cargo.uniqueItems(); i++) {

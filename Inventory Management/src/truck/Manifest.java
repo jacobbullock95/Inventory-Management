@@ -47,7 +47,7 @@ public class Manifest {
 		return cost;
 		
 	}
-
+	
 	public Truck getNonFullTruck(boolean cooled) {
 		
 		Truck truck;
@@ -176,7 +176,6 @@ public class Manifest {
 	public void exportManifest(String file) {
 		CSVWrite writer = new CSVWrite(file, toString());
 	}
-
 	
 	
 

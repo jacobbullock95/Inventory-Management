@@ -45,7 +45,7 @@ public class ParseItems {
 			if (result.get(i)[5] == null) {
 				item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
 			} else {
-				temperature = reorderAmount = Integer.parseInt(result.get(i)[5]);
+				temperature = Integer.parseInt(result.get(i)[5]);
 				item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount, temperature);
 			}
 			
