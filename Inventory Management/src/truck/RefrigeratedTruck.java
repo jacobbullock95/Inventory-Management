@@ -3,15 +3,22 @@
 package truck;
 
 import java.lang.Math;
-
 import item.Item;
 import item.Stock;
+
+/**
+ * Extends the truck class to implement the specific functions required to manage a refrigerated truck
+ * @author Jesse Haviland
+ */
 
 public class RefrigeratedTruck extends Truck {
 	
 	private int temperature;
 	private int minTemperature = -20;
 	
+	/**
+	 * Iniitilises a truck with a capacity of 800 items, also sets the temperature of the truck to 10 degrees celcius
+	 */
 	public RefrigeratedTruck() {
 		
 		super(800);
@@ -21,7 +28,14 @@ public class RefrigeratedTruck extends Truck {
 	}
 	
 	
-
+	/**
+	 * @return The temperature which the truck is set to
+	 */
+	public int getTemperature() {
+		return temperature;
+	}
+	
+	
 	@Override
 	public double getCost() {
 		
@@ -44,7 +58,6 @@ public class RefrigeratedTruck extends Truck {
 	}
 	
 	
-	
 	@Override
 	public void loadOnTruck(Item item, int quantity) throws DeliveryException {
 		
@@ -60,7 +73,7 @@ public class RefrigeratedTruck extends Truck {
 				
 				if (item.getTemperature() < minTemperature) {
 					// Check to see if truck can provide required temperature
-					throw new DeliveryException("Required temperature too low.");
+					throw new DeliveryException("Required temperature too low");
 					
 				} else {
 					// Set new truck temperature and add item to cargo
@@ -76,14 +89,7 @@ public class RefrigeratedTruck extends Truck {
 		}
 		
 	}
-	
-	
-	
-	public int getTemperature() {
-		return temperature;
-	}
-	
-	
+
 	
 	@Override
 	public String toString() {
@@ -94,6 +100,7 @@ public class RefrigeratedTruck extends Truck {
 		String name = "";
 		String quantity = "";
 		
+		// Loop through items adding them to the string
 		for (int i = 0; i < cargo.uniqueItems(); i++) {
 			
 			name = cargo.getItemByIndex(i).getName();
@@ -101,8 +108,6 @@ public class RefrigeratedTruck extends Truck {
 			str += name + "," + quantity + "\n";
 		}
 		
-		
 		return str;
 	}
-
 }
