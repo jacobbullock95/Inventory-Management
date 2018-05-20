@@ -22,8 +22,9 @@ public class ParseItems {
 	 * Initialises the class, creates the headers list and reads the CSV file
 	 * @param file indicating the location and name of the CSV file
 	 * @throws IOException 
+	 * @throws CSVFormatException 
 	 */
-	public ParseItems(String file) throws IOException {
+	public ParseItems(String file) throws IOException, CSVFormatException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");
@@ -45,7 +46,7 @@ public class ParseItems {
 	 * @throws CSVFormatException
 	 */
 	public void parseResults(Stock stock) throws StockException, CSVFormatException {
-		
+				
 		for (int i = 1; i < result.size(); i++) {
 			
 			String name = result.get(i)[0];

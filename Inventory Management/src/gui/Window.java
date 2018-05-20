@@ -11,10 +11,13 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,10 +26,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import csv.CSVFormatException;
 import csv.ParseItems;
 import csv.ParseManifest;
 import csv.ParseSales;
 import item.Stock;
+import item.StockException;
 import store.Store;
 import truck.DeliveryException;
 import truck.Manifest;
@@ -101,11 +107,39 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    
 	    btnLoadItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {				
+			public void actionPerformed(ActionEvent arg0) {	
+				
+				int userOption = JOptionPane.YES_OPTION;
+				
+				// If the store has already been initialised, warn user of consequences
+				if (storeInitialised) {
+					userOption = JOptionPane.showConfirmDialog(null
+				               ,"Performing this step again not effect items already imported.\nIt will successfully add items not currently in your stock list.\nDo you wish to continue?"
+				               ,"Warning"
+				               ,JOptionPane.YES_NO_OPTION);
+				}
+				
+				if (userOption == JOptionPane.NO_OPTION) {
+					return;
+				}
+				
 				String file = createFileChooser(true);
-				ParseItems parser = new ParseItems(file);
-				parser.parseResults(store.getInventory()); 
-				addItemsToTable();
+				ParseItems parser;
+				
+				// If user did not select a file
+				if (file.equals("")) {
+					return;
+				}
+				
+				try {
+					parser = new ParseItems(file);
+					parser.parseResults(store.getInventory());
+					addItemsToTable();
+					storeInitialised = true;
+				} catch (IOException | StockException | CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, e);
+					e.printStackTrace();
+				}
 			}
 	    });
 	    
@@ -115,13 +149,23 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnLoadSales.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String file = createFileChooser(true);
-				ParseSales parser = new ParseSales(file);
-				store.profit(parser.parseResults(store.getInventory()));
-				updateItemQuantityTable();
-				storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 				
-				System.out.println(store.getCapital());
+				if (!storeInitialised) {
+					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
+					return;
+				}
+				
+				String file = createFileChooser(true);
+				ParseSales parser;
+				try {
+					parser = new ParseSales(file);
+					store.profit(parser.parseResults(store.getInventory()));
+					updateItemQuantityTable();
+					storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
+					System.out.println(store.getCapital());
+				} catch (IOException | CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, e);
+				}
 			}
 	    });
 	    
@@ -131,24 +175,27 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnLoadManifest.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String file = createFileChooser(true);
-				ParseManifest parser = new ParseManifest(file);
 				
+				if (!storeInitialised) {
+					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
+					return;
+				}
+				
+				String file = createFileChooser(true);
+				ParseManifest parser;
 				Manifest manifest;
+				
 				try {
+					parser = new ParseManifest(file);
 					manifest = parser.parseResults(store.getInventory());
 					store.loss(manifest.getTotalCost());
 					updateItemQuantityTable();
 					storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 					System.out.println("Total Cost: " + manifest.getTotalCost());
-					
-				} catch (DeliveryException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (IOException | DeliveryException | CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, e);
 				}
-				
-				
-				
+
 				System.out.println(store.getCapital());
 			}
 	    });
@@ -160,17 +207,21 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    btnGenManifest.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
+				if (!storeInitialised) {
+					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
+					return;
+				}
+				
 				String file = createFileChooser(false);
 				Manifest manifest = new Manifest(store.getInventory());
 				
 				try {
 					manifest.CalculateManifest();
-				} catch (DeliveryException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					manifest.exportManifest(file);
+				} catch (DeliveryException | IOException e) {
+					JOptionPane.showMessageDialog(null, e);
 				}
-				
-				manifest.exportManifest(file);
 			}
 	    });
 	    
@@ -195,9 +246,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		Stock inv = store.getInventory();
-		int tableWidth = 7;
 		int tableHeight = inv.uniqueItems();
-		int rowCount = model.getRowCount();
 		
 		for (int y = 0; y < tableHeight; y++) {
 	    	model.setValueAt(inv.currentQuantity(inv.getItemByIndex(y).getName()), y, QUANTITY_COL);
@@ -209,7 +258,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		int rowCount = model.getRowCount();
 		
 		for (int i = 0; i < rowCount; i++) {
-			model.removeRow(i);
+			model.removeRow(0);
 		}
 		
 		Stock inv = store.getInventory();

@@ -26,8 +26,9 @@ public class CSVRead {
 	 * @param file This is the location and name of the CSV file stored in a string
 	 * @param headers These are the header names of the CSV file stored in an ArrayList of Strings
 	 * @throws IOException 
+	 * @throws CSVFormatException 
 	 */
-	public CSVRead(String file, List<String> headers) throws IOException {
+	public CSVRead(String file, List<String> headers) throws IOException, CSVFormatException {
 		this.file = file;
 		this.headers = headers;
 		
@@ -42,8 +43,9 @@ public class CSVRead {
 	 * These are then stored in a new row in the ArrayList
 	 * @return Returns the data read from the CSV file in an ArrayList of Array of String
 	 * @throws IOException 
+	 * @throws CSVFormatException 
 	 */
-	public List<String[]> Read() throws IOException {
+	public List<String[]> Read() throws IOException, CSVFormatException {
 		String line;
 		int size = headers.size();
 		int csvLength = 0;
@@ -68,9 +70,14 @@ public class CSVRead {
 			csvLength++;
 			
 			// Add CSV data to ArrayList
-			result.add(new String[size]);
-			for (int i = 0; i < splitLine.length; i++) {
-				result.get(csvLength)[i] = splitLine[i];
+			try {
+				result.add(new String[size]);
+				for (int i = 0; i < splitLine.length; i++) {
+					result.get(csvLength)[i] = splitLine[i];
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				br.close();
+				throw new CSVFormatException("Invalid CSV Format");
 			}
 		}
 		

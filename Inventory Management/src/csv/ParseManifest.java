@@ -24,8 +24,9 @@ public class ParseManifest {
 	 * Initialises the class, creates the headers list and reads the CSV file
 	 * @param file indicating the location and name of the CSV file
 	 * @throws IOException
+	 * @throws CSVFormatException 
 	 */
-	public ParseManifest(String file) throws IOException {
+	public ParseManifest(String file) throws IOException, CSVFormatException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");

@@ -102,8 +102,8 @@ public class Manifest {
 			Item currentItem = stock.getItemByIndex(i);
 			String currentItemName = currentItem.getName();
 			
-			// If current quantity is below the re order point
-			if (stock.currentQuantity(currentItemName) < currentItem.getReorderPoint()) {
+			// If current quantity is below or equal to the re order point
+			if (stock.currentQuantity(currentItemName) <= currentItem.getReorderPoint()) {
 				list.add(currentItem);
 			}
 		}
