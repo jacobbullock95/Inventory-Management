@@ -18,15 +18,26 @@
 package truck;
 
 import static org.junit.Assert.*;
+
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import item.Item;
+
 
 public class OrdinaryTruckTest {
 	
 	/* The following tests are for the basic functionality of
 	 * the Ordinary Truck class
 	 */
+	
+	/*
+	 * No exceptions are expected
+	 */
+	@Rule
+	public ExpectedException thrown= ExpectedException.none();
 	
 	//Test class variables 
 	private Item item1;
@@ -139,8 +150,10 @@ public class OrdinaryTruckTest {
 	/* 
 	 * Test 6: Throw error if temp controlled item is put on truck
 	 */
-	@Test(expected = DeliveryException.class)
+	@Test
 	public void throwTempErrorTest() throws DeliveryException  {
+		thrown.expect(DeliveryException.class);
+		thrown.expectMessage("Item requires temperature");
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -152,8 +165,10 @@ public class OrdinaryTruckTest {
 	/* 
 	 * Test 7: Throw error if no room left on truck but item is trying to be loaded
 	 */
-	@Test(expected = DeliveryException.class)
+	@Test
 	public void truckFullTest() throws DeliveryException  {
+		thrown.expect(DeliveryException.class);
+		thrown.expectMessage("No room left on truck");
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		

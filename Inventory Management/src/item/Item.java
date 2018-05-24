@@ -3,11 +3,13 @@ package item;
 public class Item implements Comparable<Item>{
 	
 	/**
+	 * This class is for setting up the Items with all of their associated
+	 * detials so that they may be added to a 'Stock class' TreeMap.
 	 * @author Jacob Bullock
 	 * @version 1.0
 	 */
 	
-	//Private Variables
+	//Private Class Variables
 	private String name;
 	private int cost;
 	private int sellPrice;
@@ -16,28 +18,42 @@ public class Item implements Comparable<Item>{
 	private int temperature;
 	private boolean requiresTemperature;
 	
-	//Constructor 
+	//Constructor for Non-Temperature Controlled Items
+	/**
+	 * 
+	 * @param name is the items name
+	 * @param cost is the cost of the item to the business
+	 * @param sellPrice is the price of the item for the customer
+	 * @param reorderPoint is the minimum amount of stock on hand before an order is placed
+	 * @param reorderAmount is the amount to order when the items quantity in stock drops below reorderPoint
+	 */
 	public Item(String name, int cost, int sellPrice, int reorderPoint, int reorderAmount) {
-		// TODO Auto-generated constructor stub
-		this.setName(name);
-		this.setCost(cost);
-		this.setSellPrice(sellPrice);
-		this.setReorderPoint(reorderPoint);
-		this.setReorderAmount(reorderAmount);
-		//this.setTemperature(temperature);
-		this.setRequiresTemperature(false);
+		this.name = name;
+		this.cost = cost;
+		this.sellPrice = sellPrice;
+		this.reorderPoint = reorderPoint;
+		this.reorderAmount = reorderAmount;
+		this.requiresTemperature = false;
 	}
 	
-	//Constructor 
+	//Constructor for Temperature Controlled Items
+	/**
+	 * 
+	 * @param name is the items name
+	 * @param cost is the cost of the item to the business
+	 * @param sellPrice is the price of the item for the customer
+	 * @param reorderPoint is the minimum amount of stock on hand before an order is placed
+	 * @param reorderAmount is the amount to order when the items quantity in stock drops below reorderPoint
+	 * @param temperature is the maximum temperature this item is allowed to be stored or transported at
+	 */
 	public Item(String name, int cost, int sellPrice, int reorderPoint, int reorderAmount, int temperature) {
-		// TODO Auto-generated constructor stub
-		this.setName(name);
-		this.setCost(cost);
-		this.setSellPrice(sellPrice);
-		this.setReorderPoint(reorderPoint);
-		this.setReorderAmount(reorderAmount);
-		this.setTemperature(temperature);
-		this.setRequiresTemperature(true);
+		this.name = name;
+		this.cost = cost;
+		this.sellPrice = sellPrice;
+		this.reorderPoint = reorderPoint;
+		this.reorderAmount = reorderAmount;
+		this.temperature = temperature;
+		this.requiresTemperature = true;
 	}
 	
 	//Methods
@@ -49,12 +65,6 @@ public class Item implements Comparable<Item>{
 		return cost;
 	}
 
-	/**
-	 * @param cost to be set for the item
-	 */
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
 
 	/**
 	 * @return the name of the item
@@ -63,12 +73,6 @@ public class Item implements Comparable<Item>{
 		return name;
 	}
 
-	/**
-	 * @param name to be set for the item
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	/**
 	 * @return the sellPrice of the item
@@ -77,12 +81,6 @@ public class Item implements Comparable<Item>{
 		return sellPrice;
 	}
 
-	/**
-	 * @param sellPrice to be set for the item
-	 */
-	public void setSellPrice(int sellPrice) {
-		this.sellPrice = sellPrice;
-	}
 
 	/**
 	 * @return the reorderPoint of the item
@@ -91,12 +89,6 @@ public class Item implements Comparable<Item>{
 		return reorderPoint;
 	}
 
-	/**
-	 * @param reorderPoint to be set for the item
-	 */
-	public void setReorderPoint(int reorderPoint) {
-		this.reorderPoint = reorderPoint;
-	}
 
 	/**
 	 * @return the reorderAmount of the item
@@ -105,12 +97,6 @@ public class Item implements Comparable<Item>{
 		return reorderAmount;
 	}
 
-	/**
-	 * @param reorderAmount to be set for the item
-	 */
-	public void setReorderAmount(int reorderAmount) {
-		this.reorderAmount = reorderAmount;
-	}
 
 	/**
 	 * @return the temperature of the item
@@ -119,12 +105,6 @@ public class Item implements Comparable<Item>{
 		return temperature;
 	}
 
-	/**
-	 * @param temperature to be set for the item
-	 */
-	public void setTemperature(int temperature) {
-		this.temperature = temperature;
-	}
 	
 	public void setRequiresTemperature(boolean choice) {
 		this.requiresTemperature = choice;
@@ -143,7 +123,6 @@ public class Item implements Comparable<Item>{
 
 	@Override
 	public int compareTo(Item o) {
-		// TODO Auto-generated method stub
 		return name.compareTo(o.name);
 	}
 	

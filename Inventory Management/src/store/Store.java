@@ -5,17 +5,25 @@ import item.Stock;
 public class Store {
 	
 	/**
+	 * Provides the functionality to set up the Store object.
+	 * Please note this class uses a Singleton design pattern
+	 * in order to ensure only 1 store can exist
 	 * @author Jacob Bullock
 	 * @version 1.0
 	 */
 	
-	//Private Variables
+	//Private Class Variables
 	private String name = "SuperMart";
 	private double capital = 100000.00;
-	private Stock inventory = new Stock();	
-	
+	private Stock inventory = new Stock();		
 	private static Store instance = null;
 	
+	
+	//Constructor
+	/**
+	 * The Store constructor is made private to prevent instantiation. using the singleton design
+	 * patter, the next method below getInstance will ensure only one instance of Store can be created
+	 */
 	private Store() {
 		//made private to stop instantiation
 	}

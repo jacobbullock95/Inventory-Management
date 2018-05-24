@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import item.Item;
+import item.Stock;
 import truck.Manifest;
 
 public class ManifestTest {
@@ -22,6 +23,7 @@ public class ManifestTest {
 	Truck truck2 = new OrdinaryTruck();
 	Truck truck3 = new RefrigeratedTruck();
 	Item item1 = new Item("a", 1, 2, 3, 4);
+	Stock stock = new Stock();
 
 
 
@@ -41,7 +43,7 @@ public class ManifestTest {
 	 */
 	@Test public void countNumTrucksTest() throws DeliveryException {
 		//Create new manifest
-		manifest = new Manifest();
+		manifest = new Manifest(stock);
 		
 		//Add trucks
 		manifest.addTruck(truck1);
@@ -58,7 +60,7 @@ public class ManifestTest {
 	 */
 	@Test public void getTotalCostTest() throws DeliveryException {
 		//Create new manifest
-		manifest = new Manifest();
+		manifest = new Manifest(stock);
 		
 		//Add trucks
 		manifest.addTruck(truck1);
@@ -79,7 +81,7 @@ public class ManifestTest {
 	@Test public void listManifestTest() throws DeliveryException  {
 
 		//Create new manifest
-		manifest = new Manifest();
+		manifest = new Manifest(stock);
 		
 		//Add trucks
 		manifest.addTruck(truck1);
@@ -97,7 +99,7 @@ public class ManifestTest {
 	*/
 	@Test public void nonFullTruckTest() throws DeliveryException {
 		//Create new manifest
-		manifest = new Manifest();
+		manifest = new Manifest(stock);
 		
 		//Load Truck 2
 		truck2.loadOnTruck(item1, 1000);

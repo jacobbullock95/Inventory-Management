@@ -6,14 +6,21 @@ import java.util.TreeMap;
 public class Stock {
 
 	/**
+	 * This class provides the functionality for holding a list of items 
+	 * in stock and providing their quantity. Note that this is different from Item 
+	 * as Item simply manages each item where Stock describes exactly
+	 * what is in the Store Stock or what Stock may be on a Truck
 	 * @author Jacob Bullock
 	 * @version 1.0
 	 */
 	
-	//Private Variables
+	//Private Class Variables
 	private Map<Item, Integer> stock; // mapping from item name to rating
 	
 	//Constructor 
+	/**
+	 * Creates a Stock object which is of the type TreeMap
+	 */
 	public Stock() {
 		stock = new TreeMap<Item, Integer>(); // use tree map to sort by key
 	}

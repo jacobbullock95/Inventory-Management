@@ -16,7 +16,10 @@ package truck;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import item.Item;
 
 public class RefrigeratedTruckTest {
@@ -29,12 +32,21 @@ public class RefrigeratedTruckTest {
 	//Test class variables 
 	private Item item3;
 	private Item item4;
+	private Item item5;
+	
+	/*
+	 * No exceptions are expected
+	 */
+	@Rule
+	public ExpectedException thrown= ExpectedException.none();
 	
 	
 	/* 
 	 * Declaring RefrigeratedTruck objects
 	 */
 	RefrigeratedTruck refrigeratedTruck;
+	@SuppressWarnings("unused")
+	private int temperature;
 
 
 	/* 
@@ -143,6 +155,30 @@ public class RefrigeratedTruckTest {
 		
 		//Check current items on the truck
 		assertEquals(-20, refrigeratedTruck.getTemperature());
+				
+		
+	}
+	
+	/* 
+	 * Test 7: Try to add a cold item to a truck which has a temp
+	 * not low enough
+	 */
+	@Test public void tempExceptionTest() throws DeliveryException  {
+		thrown.expect(DeliveryException.class);
+		thrown.expectMessage("Required temperature too low");
+		//Create new truck
+		refrigeratedTruck = new RefrigeratedTruck();
+		int temp = refrigeratedTruck.getTemperature() -31; // -31 is to ensure the item is the wrong temp,
+		//the value of this wrong temp isnt relevant it just ensures if the temp is wrong'the correct
+		//error message is thrown
+		
+		item5 = new Item("testitem", 1,1,1,1, temp);
+		
+		
+		
+		refrigeratedTruck.loadOnTruck(item5, 1);
+		
+		
 				
 		
 	}
