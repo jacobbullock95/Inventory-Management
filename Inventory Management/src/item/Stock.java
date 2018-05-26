@@ -40,7 +40,7 @@ public class Stock {
 	 * @
 	 */
 	public void addItem(Item item, int quantity) throws StockException {
-		if(quantity < 1) {
+		if(quantity < 0) {
 			throw new StockException("Negative quantity of items exception");
 		}
 		else if (stock.containsKey(item)){
