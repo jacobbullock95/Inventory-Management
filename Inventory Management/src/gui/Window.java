@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+
+import csv.CSVFormatException;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -227,7 +230,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    
 	    storeNameLabel = new JLabel(store.getName());
 	    storeNameLabel.setFont(new Font("Serif", Font.PLAIN, 28));
-	    storeCapLabel = new JLabel("Current Capital: $" + Double.toString(store.getCapital()));
+	    storeCapLabel = new JLabel(store.toString());
 	    storeCapLabel.setFont(new Font("Serif", Font.PLAIN, 28));
 	    
 	    createTable();

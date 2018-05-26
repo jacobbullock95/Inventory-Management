@@ -14,7 +14,7 @@ public class CSVReadTest {
 	
 
 	@Test
-	public void csvReadTestA() throws IOException {
+	public void csvReadTestA() throws IOException, CSVFormatException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");
@@ -38,7 +38,7 @@ public class CSVReadTest {
 	
 	
 	@Test
-	public void csvReadTestB() throws IOException {
+	public void csvReadTestB() throws IOException, CSVFormatException {
 		
 		List<String> headers = new ArrayList<String>();
 		headers.add("name");

@@ -1,5 +1,9 @@
 package store;
 
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import item.Stock;
 
 public class Store {
@@ -93,4 +97,21 @@ public class Store {
 	public void loss(double d) {
 		this.capital -= d;
 	}
+	
+	/**
+	 * @return the stores current capital in a string format with a label 
+	 */
+	public String toString() {
+		
+		BigDecimal roundCap = new BigDecimal (this.getCapital());
+		
+		BigDecimal newCap = roundCap.setScale(2, RoundingMode.HALF_UP);
+		
+		String str = "";
+		
+		str += "Current Capital: $" + newCap;
+		
+		return str;
+	}
+	
 }

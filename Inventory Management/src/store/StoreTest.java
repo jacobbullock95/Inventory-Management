@@ -78,6 +78,7 @@ public class StoreTest {
 		 * the default values can only be changed in the Store class as they are hard-coded in.
 		 */
 		store.setInventory(inventory);
+		store.setCapital(initialCapital);
 		
 		assertEquals(storeName, store.getName());
 		assertEquals(inventory, store.getInventory());
