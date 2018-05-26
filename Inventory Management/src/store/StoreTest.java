@@ -1,4 +1,4 @@
-// Jesse
+// author Jesse Haviland
 
 package store;
 
@@ -246,7 +246,5 @@ public class StoreTest {
 		
 		assertEquals("Current Capital: $130000.50", store.toString());
 	}
-	
-
 
 }

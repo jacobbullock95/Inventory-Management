@@ -1,16 +1,4 @@
-// Jacob
-
-/* Class Notes:
- * 
- 	 * Map<Item, Integer> truckStock; (Map<'the item','number to load'>)
-	 * Truck stock is represented in the same Map style as store stock 
-	 * however they are separate of each other.
-	 * 
-	 * As seen in test 5, cost should be calculated in cents as it will stop us from having
-	 * floating point calculation errors. Cents can easily be displayed as dollars to the user.
-	 * This can be changed later to dollars but will be easier to begin with
-	 * 
- */
+// author Jacob Bullock
 
 package truck;
 

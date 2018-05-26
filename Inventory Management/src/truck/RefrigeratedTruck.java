@@ -1,4 +1,4 @@
-// Jesse
+// author Jesse Haviland
 
 package truck;
 
@@ -32,6 +32,7 @@ public class RefrigeratedTruck extends Truck {
 	
 	
 	/**
+	 * Getter method for the current temperature of the truck
 	 * @return The temperature which the truck is set to
 	 */
 	public int getTemperature() {

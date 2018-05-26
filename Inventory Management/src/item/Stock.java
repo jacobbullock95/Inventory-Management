@@ -4,16 +4,20 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
+
 public class Stock {
 
-	/**
-	 * This class provides the functionality for holding a list of items 
-	 * in stock and providing their quantity. Note that this is different from Item 
-	 * as Item simply manages each item where Stock describes exactly
-	 * what is in the Store Stock or what Stock may be on a Truck
-	 * @author Jacob Bullock
-	 * @version 1.0
-	 */
+/**
+ * This class provides the functionality for holding a list of items 
+ * in stock and providing their quantity. Note that this is different from Item 
+ * as Item simply manages each item where Stock describes exactly
+ * what is in the Store Stock or what Stock may be on a Truck
+ * @author Jacob Bullock
+ * @version 1.0
+ */
+
+
+
 	
 	//Private Class Variables
 	private Map<Item, Integer> stock; // mapping from item name to rating
@@ -57,16 +61,18 @@ public class Stock {
 	}
 
 	/**
+	 * Gets the current stored quantity of the particular item 
 	 * @param itemName is the item we wish to find the quantity of
 	 * @return the current stored quantity of the particular item
 	 * @throws StockException 
-	 */
+	*/
 	public int currentQuantity(String itemName) throws StockException  {
 		return stock.get(getItemByName(itemName));
 	}
 	
 
 	/**
+	 * Gets the item at a certain index in the stock
 	 * @param index is the index number of the item we wish to find
 	 * @return the item found at the index specified
 	 * @throws StockException 
@@ -91,6 +97,7 @@ public class Stock {
 	
 	
 	/**
+	 * Gets an item from the stock with a particular name
 	 * @param itemName is the name of the item we wish to find
 	 * @return the item found with the specified name
 	 * @throws StockException 
@@ -114,6 +121,7 @@ public class Stock {
 	
 	
 	/**
+	 * Reduces the quantity of an item
 	 * @param itemName is the name of the item to have its quantity reduced
 	 * @param quantity is the amount to reduce by
 	 * @throws StockException 
@@ -135,6 +143,7 @@ public class Stock {
 	}
 
 	/**
+	 * Increases the quantity of an item
 	 * @param itemName is the name of the item to have its quantity increased
 	 * @param quantity is the amount to increase by
 	 * @throws StockException 
@@ -147,6 +156,7 @@ public class Stock {
 	}
 
 	/**
+	 * Gets the total quantity of all items in stock
 	 * @return the total quantity of all items in stock
 	 */
 	public int totalQuantity() {
@@ -158,6 +168,7 @@ public class Stock {
 	}
 	
 	/**
+	 * Calculates the cost of all items in stock 
 	 * @return the cost of all items in stock
 	 */
 	public int calculateCost() {

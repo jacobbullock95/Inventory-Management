@@ -9,7 +9,7 @@ import item.StockException;
 
 /**
  * Reads in and parses a CSV document to adjust store profit and stock levels
- * @author 
+ * @author Jacob Bullock
  */
 public class ParseSales {
 	
@@ -62,6 +62,7 @@ public class ParseSales {
 	
 	
 	/**
+	 * Getter for the CSV parser results
 	 * @return The result from the CSV read
 	 */
 	public List<String[]> getResult() {

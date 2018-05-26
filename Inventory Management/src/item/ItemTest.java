@@ -1,4 +1,4 @@
-// Jesse
+// author Jesse Haviland
 
 package item;
 
