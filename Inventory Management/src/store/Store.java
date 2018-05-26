@@ -99,7 +99,7 @@ public class Store {
 
 	/**
 	 * Reduces the stores capital
-	 * @param d is the amount the stores capital should be decreased
+	 * @param amount is the amount the stores capital should be decreased
 	 */
 	public void loss(double amount) {
 		this.capital -= amount;
