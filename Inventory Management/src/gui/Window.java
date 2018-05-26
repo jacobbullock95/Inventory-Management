@@ -30,7 +30,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import csv.CSVFormatException;
 import csv.ParseItems;
 import csv.ParseManifest;
 import csv.ParseSales;
@@ -44,6 +43,7 @@ import truck.Manifest;
 /**
  * Entry point for program. Launches the GUI, handles the flow of the program and handles all exceptions.
  * @author Jesse Haviland
+ * NOTE: Some boilerplate code from CAB302 Lectures/Practicals has been utilised in constructing elements of the GUI
  */
 
 @SuppressWarnings("serial")

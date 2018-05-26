@@ -1,4 +1,4 @@
-// Jacob
+// author Jacob Bullock
 
 package truck;
 

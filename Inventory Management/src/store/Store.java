@@ -1,20 +1,18 @@
 package store;
 
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
 import item.Stock;
 
+/**
+ * Provides the functionality to set up the Store object.
+ * Please note this class uses a Singleton design pattern
+ * in order to ensure only 1 store can exist
+ * @author Jacob Bullock
+ * @version 1.0
+ */
+
 public class Store {
-	
-	/**
-	 * Provides the functionality to set up the Store object.
-	 * Please note this class uses a Singleton design pattern
-	 * in order to ensure only 1 store can exist
-	 * @author Jacob Bullock
-	 * @version 1.0
-	 */
 	
 	//Private Class Variables
 	private String name = "SuperMart";
@@ -33,6 +31,7 @@ public class Store {
 	}
 	
 	/** 
+	 * Gets the single instance of Store
 	 * @return a single static Store instance
 	 */
 	public static Store getInstance() {
@@ -43,6 +42,7 @@ public class Store {
 	}
 		
 	/**
+	 * Getter method for the stores name
 	 * @return get the stores name
 	 */
 	public String getName() {
@@ -50,6 +50,7 @@ public class Store {
 	}
 	
 	/**
+	 * Setter method for the stores name
 	 * @param storeName sets the stores name
 	 */
 	public void setName(String storeName) {
@@ -57,6 +58,7 @@ public class Store {
 	}
 
 	/**
+	 * Getter method for the stores inventory
 	 * @return the stores inventory
 	 */
 	public Stock getInventory() {
@@ -64,6 +66,7 @@ public class Store {
 	}
 	
 	/**
+	 * Setter method for the stores name
 	 * @param inventory sets the stores inventory
 	 */
 	public void setInventory(Stock inventory) {
@@ -71,6 +74,7 @@ public class Store {
 	}
 
 	/**
+	 * Getter method for the stores capital
 	 * @return the stores capital
 	 */
 	public double getCapital() {
@@ -78,6 +82,7 @@ public class Store {
 	}
 
 	/**
+	 * Setter method for the stores name
 	 * @param capital sets the stores capital
 	 */
 	public void setCapital(double initialCapital) {
@@ -85,20 +90,23 @@ public class Store {
 	}
 
 	/**
-	 * @param d is the amount the stores capital should be increased
+	 * Increases the stores capital
+	 * @param amount is the amount the stores capital should be increased
 	 */
-	public void profit(double d) {
-		this.capital += d;
+	public void profit(double amount) {
+		this.capital += amount;
 	}
 
 	/**
+	 * Reduces the stores capital
 	 * @param d is the amount the stores capital should be decreased
 	 */
-	public void loss(double d) {
-		this.capital -= d;
+	public void loss(double amount) {
+		this.capital -= amount;
 	}
 	
 	/**
+	 * Converts the stores prifit into the following format: "Current Capital: $[dollars].[cents]"
 	 * @return the stores current capital in a string format with a label 
 	 */
 	public String toString() {

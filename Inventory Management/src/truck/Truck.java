@@ -48,6 +48,7 @@ public abstract class Truck {
 	
 	
 	/**
+	 * Getter method for the current cargo of the truck
 	 * @return The Stock class containing the current cargo of the truck
 	 */
 	public Stock getCargo() {
@@ -56,6 +57,7 @@ public abstract class Truck {
 	
 	
 	/**
+	 * Getter method for the current capacity of the truck
 	 * @return The current maximum capacity of the truck
 	 */
 	public int getCapacity() {
@@ -64,6 +66,7 @@ public abstract class Truck {
 	
 	
 	/**
+	 * Gets the quantity of stock on board the truck
 	 * @return The current amount of items on board the truck
 	 */
 	public int countAllStock() {
@@ -82,6 +85,7 @@ public abstract class Truck {
 	
 	
 	/**
+	 * Gets the amount of space remaining on the truck
 	 * @return The remaining space on board the truck
 	 */
 	public int getRemainingSpace() {

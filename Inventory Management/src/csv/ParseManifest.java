@@ -102,6 +102,7 @@ public class ParseManifest {
 	
 	
 	/**
+	 * Getter for the CSV parser results
 	 * @return The result from the CSV read
 	 */
 	public List<String[]> getResult() {

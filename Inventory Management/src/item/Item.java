@@ -1,14 +1,14 @@
 package item;
 
+/**
+ * This class is for setting up the Items with all of their associated
+ * detials so that they may be added to a 'Stock class' TreeMap.
+ * @author Jacob Bullock
+ * @version 1.0
+ */
+
 public class Item implements Comparable<Item>{
-	
-	/**
-	 * This class is for setting up the Items with all of their associated
-	 * detials so that they may be added to a 'Stock class' TreeMap.
-	 * @author Jacob Bullock
-	 * @version 1.0
-	 */
-	
+
 	//Private Class Variables
 	private String name;
 	private int cost;
@@ -20,7 +20,7 @@ public class Item implements Comparable<Item>{
 	
 	//Constructor for Non-Temperature Controlled Items
 	/**
-	 * 
+	 * Constructs an item which does not need to be temperature controlled
 	 * @param name is the items name
 	 * @param cost is the cost of the item to the business
 	 * @param sellPrice is the price of the item for the customer
@@ -38,7 +38,7 @@ public class Item implements Comparable<Item>{
 	
 	//Constructor for Temperature Controlled Items
 	/**
-	 * 
+	 * Constructs an item which needs to be temperature controlled
 	 * @param name is the items name
 	 * @param cost is the cost of the item to the business
 	 * @param sellPrice is the price of the item for the customer
@@ -59,6 +59,7 @@ public class Item implements Comparable<Item>{
 	//Methods
 
 	/**
+	 * Getter method for item cost
 	 * @return the cost of the item
 	 */
 	public int getCost() {
@@ -67,6 +68,7 @@ public class Item implements Comparable<Item>{
 
 
 	/**
+	 * Getter method for item name
 	 * @return the name of the item
 	 */
 	public String getName() {
@@ -75,6 +77,7 @@ public class Item implements Comparable<Item>{
 
 
 	/**
+	 * Getter method for the item sell price
 	 * @return the sellPrice of the item
 	 */
 	public int getSellPrice() {
@@ -83,6 +86,7 @@ public class Item implements Comparable<Item>{
 
 
 	/**
+	 * Getter method for the reorder point of the item
 	 * @return the reorderPoint of the item
 	 */
 	public int getReorderPoint() {
@@ -91,6 +95,7 @@ public class Item implements Comparable<Item>{
 
 
 	/**
+	 * Getter method for the item reorder amount
 	 * @return the reorderAmount of the item
 	 */
 	public int getReorderAmount() {
@@ -99,12 +104,17 @@ public class Item implements Comparable<Item>{
 
 
 	/**
+	 * Getter method for temperature which the item must be kept at if requiresTemperature is true
 	 * @return the temperature of the item
 	 */
 	public int getTemperature() {
 		return temperature;
 	}
 	
+	/**
+	 * Getter method for whether or not the item requires tempreature control
+	 * @return true if the item requires temprature control or false if not
+	 */
 	public boolean getRequiresTemperature() {
 		return requiresTemperature;
 	}

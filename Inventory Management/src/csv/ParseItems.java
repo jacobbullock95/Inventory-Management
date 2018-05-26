@@ -10,7 +10,7 @@ import item.StockException;
 
 /**
  * Reads in and parses a CSV document to import item types
- * @author 
+ * @author Jacob Bullock
  */
 public class ParseItems {
 	
@@ -76,6 +76,7 @@ public class ParseItems {
 	
 	
 	/**
+	 * Getter for the CSV parser results
 	 * @return The result from the CSV read
 	 */
 	public List<String[]> getResult() {

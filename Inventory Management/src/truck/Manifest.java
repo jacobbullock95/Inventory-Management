@@ -39,6 +39,7 @@ public class Manifest {
 	
 	
 	/**
+	 * Gets the total number of trucks in the manifest
 	 * @return The total number of trucks in the manifest
 	 */
 	public int totalTrucks() {
@@ -47,6 +48,7 @@ public class Manifest {
 	
 	
 	/**
+	 * Gets the total cost of all trucks and the items within them
 	 * @return The total cost of all trucks and their cargo in the manifest
 	 */
 	public double getTotalCost() {
@@ -194,6 +196,7 @@ public class Manifest {
 	
 	
 	/**
+	 * Concatenates all  the results from all truck.toString() within the manifest together
 	 * @return A string which is the concatenation of all of the truck toString results in the manifest
 	 */
 	public String toString() {
