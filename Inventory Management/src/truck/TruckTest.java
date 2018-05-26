@@ -18,15 +18,12 @@ public class TruckTest {
 	//Test class variables 
 	private Item item1;
 	private Item item2;
-<<<<<<< HEAD
+
 
 	
 	private Stock stock;
 	
-=======
-	
-	private Stock stock;	
->>>>>>> 136ed46afa0cc3b3f455c65a3990cf7b8e501656
+
 	
 	/* 
 	 * Declaring Truck objects
