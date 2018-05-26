@@ -27,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -405,7 +406,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	 * @return the file location the user chose
 	 */
 	private String createFileChooser(boolean openDialog) {
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 		final JFileChooser fc =  new JFileChooser();
+		fc.setFileFilter(filter);
 		
 		int returnVal;
 		
@@ -419,6 +422,16 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    if (returnVal==JFileChooser.APPROVE_OPTION) {
 	    	File  file =  fc.getSelectedFile();
 	    	String filename = file.getAbsolutePath();
+	    	
+	    	// Append .csv to file name if not already there
+	    	if (!openDialog) {
+	    		String extension = getFileExtension(file.getName());
+	    		if (!extension.equals("csv")) {
+	    			filename += ".csv";
+	    		}
+	    	}
+	    	
+	    	
 	    	return filename;
 	    } else if (returnVal == JFileChooser.CANCEL_OPTION) {
 	    	
@@ -475,6 +488,21 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		constraints.gridwidth = w;
 		constraints.gridheight = h;
 		jp.add(c, constraints);
+	}
+	
+	/**
+	 * Gets the file extension of a file name
+	 * @param fileName of the file
+	 * @return an empty string if no file extension or the file extension (everything after the '.' in the file name)
+	 */
+	private String getFileExtension(String fileName) {
+		String extension = "";
+		int index = fileName.lastIndexOf('.');
+
+        if (index > 0 && index < fileName.length() - 1) {
+        	extension = fileName.substring(index + 1).toLowerCase();
+        }
+        return extension;
 	}
 
 }
