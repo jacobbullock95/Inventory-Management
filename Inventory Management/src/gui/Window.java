@@ -164,7 +164,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					parser = new ParseSales(file);
 					store.profit(parser.parseResults(store.getInventory()));
 					updateItemQuantityTable();
-					storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
+					//storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
+					storeCapLabel.setText(store.toString());
 					System.out.println(store.getCapital());
 				} catch (IOException | CSVFormatException e) {
 					JOptionPane.showMessageDialog(null, e);
@@ -193,7 +194,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					manifest = parser.parseResults(store.getInventory());
 					store.loss(manifest.getTotalCost());
 					updateItemQuantityTable();
-					storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
+					//storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
+					storeCapLabel.setText(store.toString());
 					System.out.println("Total Cost: " + manifest.getTotalCost());
 				} catch (IOException | DeliveryException | CSVFormatException e) {
 					JOptionPane.showMessageDialog(null, e);

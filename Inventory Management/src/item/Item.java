@@ -104,11 +104,6 @@ public class Item implements Comparable<Item>{
 	public int getTemperature() {
 		return temperature;
 	}
-
-	
-	public void setRequiresTemperature(boolean choice) {
-		this.requiresTemperature = choice;
-	}
 	
 	public boolean getRequiresTemperature() {
 		return requiresTemperature;

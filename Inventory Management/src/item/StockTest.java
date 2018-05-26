@@ -428,5 +428,50 @@ public class StockTest {
 		// Access an item that does not exist
 		stock.getItemByName("Cookies");
 	}
+	
+	/*
+	 * Creates a stock object and adds the same item three times.
+	 * Quantity should add together
+	 */
+	@Test
+	public void stockItemDuplicate() throws StockException {
+		
+		// Create an empty stock collection
+		stock = new Stock();
+		
+		// Add items to the collection
+		stock.addItem(item1, 20);
+		
+		assertEquals(20, stock.currentQuantity(item1.getName()));
+		
+		stock.addItem(item1, 1002);
+		
+		assertEquals(1022, stock.currentQuantity(item1.getName()));
+		
+		stock.addItem(item1, 300);
+		
+		assertEquals(1322, stock.currentQuantity(item1.getName()));
+	}
+	
+	/*
+	 * Directly Test StockException
+	 */
+	@Test
+	public void stockException() throws StockException {
+		thrown.expect(StockException.class);
+		thrown.expectMessage("This is a stock exception");
+		
+		throw( new StockException("This is a stock exception") );
+	}
+	
+	/*
+	 * Directly Test StockException
+	 */
+	@Test
+	public void stockExceptionTwo() throws StockException {
+		thrown.expect(StockException.class);
+		
+		throw(new StockException());
+	}
 
 }

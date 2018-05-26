@@ -11,6 +11,7 @@ import org.junit.rules.ExpectedException;
 public class ItemTest {
 	
 	Item item;
+	Item item2;
 	
 	/* 
 	 * Items have 5 properties: name, cost to make, sell price, reorder point, reorder amount and temperature
@@ -76,6 +77,84 @@ public class ItemTest {
 		assertEquals(reorderPoint, item.getReorderPoint());
 		assertEquals(reorderAmount, item.getReorderAmount());
 		assertEquals(temperature, item.getTemperature());
+	}
+	
+	/*
+	 * Creates an item object (with temperature) and tests getRequiresTemperature()
+	 */
+	@Test
+	public void itemCreateTestWithTempTwo() {
+		
+		String name = "frozen meat";
+		int cost = 10;
+		int sellPrice = 14;
+		int reorderPoint = 450;
+		int reorderAmount = 575;
+		int temperature = -14;
+		
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount, temperature);
+		
+		
+		assertEquals(true, item.getRequiresTemperature());
+	}
+	
+	/*
+	 * Creates an item object (without temperature) and tests getRequiresTemperature()
+	 */
+	@Test
+	public void itemCreateTestNoTempTwo() {
+		String name = "rice";
+		int cost = 2;
+		int sellPrice = 3;
+		int reorderPoint = 225;
+		int reorderAmount = 300;
+		
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
+		
+		assertEquals(false,  item.getRequiresTemperature());
+	}
+	
+	/*
+	 * Compare two items together
+	 */
+	@Test
+	public void itemCompare() {
+		String name = "rice";
+		int cost = 2;
+		int sellPrice = 3;
+		int reorderPoint = 225;
+		int reorderAmount = 300;
+		
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
+		
+		assertEquals(0,  item.compareTo(item));
+	}
+	
+	/*
+	 * Compare two items together
+	 */
+	@Test
+	public void itemCompareTwo() {
+		String name = "rice";
+		int cost = 2;
+		int sellPrice = 3;
+		int reorderPoint = 225;
+		int reorderAmount = 300;
+		
+		String name2 = "frozen meat";
+		int cost2 = 10;
+		int sellPrice2 = 14;
+		int reorderPoint2 = 450;
+		int reorderAmount2 = 575;
+		int temperature2 = -14;
+		
+		item = new Item(name, cost, sellPrice, reorderPoint, reorderAmount);
+		
+		item2 = new Item(name2, cost2, sellPrice2, reorderPoint2, reorderAmount2, temperature2);
+		
+		
+		assertEquals(item.getName().compareTo(item2.getName()),  item.compareTo(item2));
+		assertEquals(item2.getName().compareTo(item.getName()),  item2.compareTo(item));
 	}
 	
 }
