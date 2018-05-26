@@ -40,6 +40,12 @@ import store.Store;
 import truck.DeliveryException;
 import truck.Manifest;
 
+
+/**
+ * Entry point for program. Launches the GUI, handles the flow of the program and handles all exceptions.
+ * @author Jesse Haviland
+ */
+
 @SuppressWarnings("serial")
 public class Window extends JFrame implements ActionListener, Runnable {
 	
@@ -63,11 +69,35 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	private JTable table;
 	
 	private static Store store;
+	
+	
+	/**
+	 * Program entry point. Creates and initialises the store. Launches the window
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		String storeName = "SuperMart";
+		int initialCapital = 100000;
+		store = Store.getInstance();
+		store.setName(storeName);
+		store.setCapital(initialCapital);
+				
+		JFrame.setDefaultLookAndFeelDecorated(true);
+        SwingUtilities.invokeLater(new Window("Hello"));
 
+	}
+
+	/**
+	 * Launches a JFrame window
+	 * @param title of the window
+	 * @throws HeadlessException
+	 */
 	public Window(String title) throws HeadlessException {
 		super(title);
 	}
-
+	
+	
 	@Override
 	public void run() {
 		createWindow();
@@ -76,25 +106,16 @@ public class Window extends JFrame implements ActionListener, Runnable {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
-	public static void main(String[] args) {
-		
-		String storeName = "SuperMart";
-		int initialCapital = 100000;
-		store = Store.getInstance();
-		store.setName(storeName);
-		store.setCapital(initialCapital);
-		
-		System.out.println("Starting Capital: " + store.getCapital());
-		
-		JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new Window("Hello"));
-
-	}
 	
+	/**
+	 * Builds the window. Adds the panel which house the labels, table and buttons. 
+	 * Adds action listeners for each of the buttons. These listeners enable the 
+	 * flow of the program, warn the user using JOptionPanes when applicable and
+	 * displays exceptions to the user.
+	 */
 	private void createWindow() {
 		setSize(WIDTH, HEIGHT);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,6 +126,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    pnlBtn = createPanel(Color.WHITE);
 	    pnlBtn.setBorder(new EmptyBorder(10, 10, 10, 10));
 	    
+	    // Load Item Properties Button
 	    btnLoadItem = createButton("Load Item Properties");
 	    btnLoadItem.setPreferredSize(new Dimension(300, 50));
 	    
@@ -112,6 +134,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
 				
+				// Assume yes for now
 				int userOption = JOptionPane.YES_OPTION;
 				
 				// If the store has already been initialised, warn user of consequences
@@ -122,6 +145,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				               ,JOptionPane.YES_NO_OPTION);
 				}
 				
+				// If user selected no, exit now
 				if (userOption == JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -129,23 +153,29 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				String file = createFileChooser(true);
 				ParseItems parser;
 				
-				// If user did not select a file
+				// If user did not select a file, exit now
 				if (file.equals("")) {
 					return;
 				}
 				
+				// Attempt to parse the CSV file, update the store and add them to the table
+				// Let user know when it goes wrong
 				try {
 					parser = new ParseItems(file);
 					parser.parseResults(store.getInventory());
 					addItemsToTable();
 					storeInitialised = true;
-				} catch (IOException | StockException | CSVFormatException e) {
-					JOptionPane.showMessageDialog(null, e);
-					e.printStackTrace();
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
+				} catch (StockException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the stores stock. See error details below \n\n" + e);
+				} catch (CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the format of the CSV you selected. See error details below \n\n" + e);
 				}
 			}
 	    });
 	    
+	    // Load Sales Log Button
 	    btnLoadSales = createButton("Load Sales Log");
 	    btnLoadSales.setPreferredSize(new Dimension(300, 50));
 	    
@@ -153,26 +183,37 @@ public class Window extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
+				// If item properties have not been loaded in, do not let the user continue, exit now
 				if (!storeInitialised) {
 					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
 					return;
 				}
 				
 				String file = createFileChooser(true);
+				
+				// If user did not select a file, exit now
+				if (file.equals("")) {
+					return;
+				}
+				
+				// Attempt to parse the CSV file, update the store and add them to the table
+				// Let user know when it goes wrong
 				ParseSales parser;
 				try {
 					parser = new ParseSales(file);
 					store.profit(parser.parseResults(store.getInventory()));
 					updateItemQuantityTable();
-					//storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 					storeCapLabel.setText(store.toString());
 					System.out.println(store.getCapital());
-				} catch (IOException | CSVFormatException e) {
-					JOptionPane.showMessageDialog(null, e);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
+				} catch (CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the format of the CSV you selected. See error details below \n\n" + e);
 				}
 			}
 	    });
 	    
+	    // Load Manifest Button
 	    btnLoadManifest = createButton("Load Manifest");
 	    btnLoadManifest.setPreferredSize(new Dimension(300, 50));
 	    
@@ -180,31 +221,43 @@ public class Window extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
+				// If item properties have not been loaded in, do not let the user continue, exit now
 				if (!storeInitialised) {
 					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
 					return;
 				}
 				
 				String file = createFileChooser(true);
+				
+				// If user did not select a file, exit now
+				if (file.equals("")) {
+					return;
+				}
+				
+				// Attempt to parse the CSV file, update the store and add them to the table
+				// Let user know when it goes wrong
 				ParseManifest parser;
 				Manifest manifest;
-				
 				try {
 					parser = new ParseManifest(file);
 					manifest = parser.parseResults(store.getInventory());
 					store.loss(manifest.getTotalCost());
 					updateItemQuantityTable();
-					//storeCapLabel.setText("Current Capital: $" + Double.toString(store.getCapital()));
 					storeCapLabel.setText(store.toString());
 					System.out.println("Total Cost: " + manifest.getTotalCost());
-				} catch (IOException | DeliveryException | CSVFormatException e) {
-					JOptionPane.showMessageDialog(null, e);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
+				} catch (CSVFormatException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the format of the CSV you selected. See error details below \n\n" + e);
+				} catch (DeliveryException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores delivery system. See error details below \n\n" + e);
 				}
 
 				System.out.println(store.getCapital());
 			}
 	    });
 	    
+	    // Export Manifest Button
 	    btnGenManifest = createButton("Export Manifest");
 	    btnGenManifest.setPreferredSize(new Dimension(300, 50));
 	    
@@ -213,39 +266,54 @@ public class Window extends JFrame implements ActionListener, Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
+				// If item properties have not been loaded in, do not let the user continue, exit now
 				if (!storeInitialised) {
 					JOptionPane.showMessageDialog(null, "Can not perform this task.\nPlease click the 'Load Item Properties' button to initialise your store.");
 					return;
 				}
 				
 				String file = createFileChooser(false);
-				Manifest manifest = new Manifest(store.getInventory());
 				
+				// If user did not select a file, exit now
+				if (file.equals("")) {
+					return;
+				}
+				
+				// Attempt to export the CSV file, update the store and add them to the table
+				// Let user know when it goes wrong
+				Manifest manifest = new Manifest(store.getInventory());
 				try {
 					manifest.CalculateManifest();
 					manifest.exportManifest(file);
-				} catch (DeliveryException | IOException e) {
-					JOptionPane.showMessageDialog(null, e);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
+				} catch (DeliveryException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores delivery system. See error details below \n\n" + e);
 				}
 			}
 	    });
 	    
+	    // Create and format header labels
 	    storeNameLabel = new JLabel(store.getName());
 	    storeNameLabel.setFont(new Font("Serif", Font.PLAIN, 28));
 	    storeCapLabel = new JLabel(store.toString());
 	    storeCapLabel.setFont(new Font("Serif", Font.PLAIN, 28));
 	    
+	    // Create empty table
 	    createTable();
 	    layoutButtonPanel(); 
 	    layoutLabelPanel();
 	    
+	    // Add panels to window
 	    this.getContentPane().add(pnlLabel, BorderLayout.NORTH);
 	    this.getContentPane().add(pnlBtn,   BorderLayout.SOUTH);
 
-	    //repaint(); 
 	    this.setVisible(true);
 	}
 	
+	/**
+	 * Updates the quantities in the table based on the current stock levels
+	 */
 	private void updateItemQuantityTable() {
 		final int QUANTITY_COL = 1;
 		
@@ -253,11 +321,15 @@ public class Window extends JFrame implements ActionListener, Runnable {
 		Stock inv = store.getInventory();
 		int tableHeight = inv.uniqueItems();
 		
+		// Loop through table updating values
 		for (int y = 0; y < tableHeight; y++) {
 	    	model.setValueAt(inv.currentQuantity(inv.getItemByIndex(y).getName()), y, QUANTITY_COL);
 	    }
 	}
 	
+	/**
+	 * Adds all items and their properties to the table
+	 */
 	private void addItemsToTable() {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		int rowCount = model.getRowCount();
@@ -290,11 +362,15 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    }
 	}
 	
+	/**
+	 * Creates an empty table with only the column headings
+	 */
 	private void createTable() {
 		String[] columnNames = {"Item Name", "Item Quantity", "Manufacturing cost ($)", "Sell Price ($)", "Reorder Point", "Reorder Amount", "Temperature (C)"};
 	    
 	    table = new JTable(null, columnNames);
 	    
+	    // Sets cells to not be editable
 	    DefaultTableModel tableModel = new DefaultTableModel(null, columnNames) {
 
 	        @Override
@@ -306,6 +382,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 
 	    table.setModel(tableModel);
 	    
+	    // Centers all data in the table
 	    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 	    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 	    
@@ -313,6 +390,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    	table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
         }
 	    
+	    // If table gets larger than the container it will be scrollable
 	    tableScrollPane = new JScrollPane(table);
 	    tableScrollPane.setBorder(new EmptyBorder(0, 10, 0, 10));
 	    tableScrollPane.setBackground(Color.WHITE);
@@ -321,6 +399,11 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    this.getContentPane().add(tableScrollPane,BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Creates a file chooser
+	 * @param openDialog is true if opening a file, else it will show the save option
+	 * @return the file location the user chose
+	 */
 	private String createFileChooser(boolean openDialog) {
 		final JFileChooser fc =  new JFileChooser();
 		
@@ -362,17 +445,15 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    
 	    // Add components to grid
 	    GridBagConstraints constraints = new GridBagConstraints(); 
-	    
-	    // Defaults
-	    constraints.fill = GridBagConstraints.NONE;
+	    constraints.fill = GridBagConstraints.BOTH;
 	    constraints.anchor = GridBagConstraints.CENTER;
 	    constraints.weightx = 100;
-	    constraints.weighty = 100;
+	    constraints.weighty = 100;	
 	    
-	    addToPanel(pnlBtn, btnLoadItem,  constraints, 0, 0, 2, 1); 
-	    addToPanel(pnlBtn, btnLoadSales, constraints, 3, 0, 2, 1); 
-	    addToPanel(pnlBtn, btnLoadManifest, constraints, 0, 2, 2, 1); 
-	    addToPanel(pnlBtn, btnGenManifest, constraints, 3, 2, 2, 1); 	
+	    addToPanel(pnlBtn, btnLoadItem,  constraints, 0, 0, 1, 1); 
+	    addToPanel(pnlBtn, btnLoadSales, constraints, 1, 0, 1, 1); 
+	    addToPanel(pnlBtn, btnLoadManifest, constraints, 2, 0, 1, 1); 
+	    addToPanel(pnlBtn, btnGenManifest, constraints, 3, 0, 1, 1); 	
 	}
 	
 	private void layoutLabelPanel() {
@@ -381,12 +462,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    
 	    // Add components to grid
 	    GridBagConstraints constraints = new GridBagConstraints(); 
-	    
-	    // Defaults
 	    constraints.fill = GridBagConstraints.NONE;
 	    constraints.anchor = GridBagConstraints.CENTER;
-	    constraints.weightx = 100;
-	    constraints.weighty = 100;
 	    
 	    addToPanel(pnlLabel, storeNameLabel, constraints, 0, 0, 1, 1);
 	    addToPanel(pnlLabel, storeCapLabel, constraints, 2, 0, 1, 1);
