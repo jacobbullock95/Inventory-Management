@@ -3,6 +3,7 @@ package item;
 import java.util.Map;
 import java.util.TreeMap;
 
+
 public class Stock {
 
 	/**
@@ -31,10 +32,14 @@ public class Stock {
 	 * Adds an item to the stock.
 	 * @param item is the item to be added
 	 * @param quantity is the number of the item to be added
+	 * @throws StockException 
 	 * @
 	 */
-	public void addItem(Item item, int quantity) {
-		if (stock.containsKey(item)){
+	public void addItem(Item item, int quantity) throws StockException {
+		if(quantity < 1) {
+			throw new StockException("Negative quantity of items exception");
+		}
+		else if (stock.containsKey(item)){
 			stock.put(item, quantity + stock.get(item)); //If the key exists and we use 'put', the item (key) will remain the same
 											//and a new quantity (value) is added
 		}
@@ -54,8 +59,9 @@ public class Stock {
 	/**
 	 * @param itemName is the item we wish to find the quantity of
 	 * @return the current stored quantity of the particular item
+	 * @throws StockException 
 	 */
-	public int currentQuantity(String itemName) {
+	public int currentQuantity(String itemName) throws StockException  {
 		return stock.get(getItemByName(itemName));
 	}
 	
@@ -63,10 +69,16 @@ public class Stock {
 	/**
 	 * @param index is the index number of the item we wish to find
 	 * @return the item found at the index specified
+	 * @throws StockException 
 	 */
-	public Item getItemByIndex(int index) {
+	public Item getItemByIndex(int index) throws StockException {
 		Item theItem = null;
 		int counter = 0;
+		
+		if(index > this.uniqueItems() - 1) {
+			throw new StockException("Item index out of bounds exception");
+		}
+		
 		for (Item item : stock.keySet()) {
 			if(counter == index) {
 				theItem = item;
@@ -81,8 +93,9 @@ public class Stock {
 	/**
 	 * @param itemName is the name of the item we wish to find
 	 * @return the item found with the specified name
+	 * @throws StockException 
 	 */
-	public Item getItemByName(String itemName) {
+	public Item getItemByName(String itemName) throws StockException {
 		Item theItem = null;
 		for (Item item : stock.keySet()) {
 			if(item.getName().equals(itemName)) {
@@ -90,16 +103,32 @@ public class Stock {
 				break;
 			}
 		}
-		return theItem;
+		if(theItem == null) {
+			throw new StockException("Item does not exist exception");
+		}
+		else {
+			return theItem;
+		}
+		
 	}
 	
 	
 	/**
 	 * @param itemName is the name of the item to have its quantity reduced
 	 * @param quantity is the amount to reduce by
+	 * @throws StockException 
 	 */
-	public void reduceQuantity(String itemName, int quantity) {
-		int newQuantity = stock.get(getItemByName(itemName)) - quantity;
+	public void reduceQuantity(String itemName, int quantity) throws StockException {
+		int priorQuantity = this.currentQuantity(itemName);
+		int newQuantity = 0;
+		
+		if(quantity > priorQuantity) {
+			throw new StockException("Negative quantity of items exception");
+		}
+		else {
+			newQuantity = stock.get(getItemByName(itemName)) - quantity;
+		}
+		
 		
 		stock.put(getItemByName(itemName), newQuantity);
 		
@@ -108,8 +137,9 @@ public class Stock {
 	/**
 	 * @param itemName is the name of the item to have its quantity increased
 	 * @param quantity is the amount to increase by
+	 * @throws StockException 
 	 */
-	public void increaseQuantity(String itemName, int quantity) {
+	public void increaseQuantity(String itemName, int quantity) throws StockException {
 		int newQuantity = stock.get(getItemByName(itemName)) + quantity;
 		
 		stock.put(getItemByName(itemName), newQuantity);

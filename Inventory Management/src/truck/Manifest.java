@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import csv.CSVWrite;
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 /**
  * Provides functionality to manage a collection of trucks. 
@@ -48,8 +49,9 @@ public class Manifest {
 	
 	/**
 	 * @return The total cost of all trucks and their cargo in the manifest
+	 * @throws StockException 
 	 */
-	public double getTotalCost() {
+	public double getTotalCost() throws StockException {
 		double cost = 0;
 		
 		// Get truck cost
@@ -94,8 +96,9 @@ public class Manifest {
 	 * Calculates the items that need to be re-ordered
 	 * Calls OptimiseManifest
 	 * @throws DeliveryException
+	 * @throws StockException 
 	 */
-	public void CalculateManifest() throws DeliveryException {
+	public void CalculateManifest() throws DeliveryException, StockException {
 		
 		for (int i = 0; i < stock.uniqueItems(); i++) {
 			
@@ -116,8 +119,9 @@ public class Manifest {
 	/**
 	 * Loads required items with quantities onto trucks in a cost optimal manner. Adds new trucks to the manifest
 	 * @throws DeliveryException
+	 * @throws StockException 
 	 */
-	public void OptimiseManifest() throws DeliveryException {
+	public void OptimiseManifest() throws DeliveryException, StockException {
 		final int MAX_REF_TEMP = 10;
 		final boolean COOLED = true;
 		final boolean NOT_COOLED = false;
@@ -168,8 +172,9 @@ public class Manifest {
 	 * Loads the re-order amount of an item onto trucks
 	 * @param cooled indicates a refrigerated truck is required otherwise it will be loaded on a truck of any type
 	 * @throws DeliveryException
+	 * @throws StockException 
 	 */
-	public void loadTrucks(boolean cooled, Item item) throws DeliveryException {
+	public void loadTrucks(boolean cooled, Item item) throws DeliveryException, StockException {
 		
 		int quantityRem = item.getReorderAmount();
 		Truck truck;
@@ -239,4 +244,6 @@ public class Manifest {
 		
 		return truck;
 	}
+	
+
 }

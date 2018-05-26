@@ -1,7 +1,10 @@
 package truck;
 
+
+
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 /**
  * Extends the truck class to implement the specific functions required to manage an ordinary truck
@@ -20,7 +23,7 @@ public class OrdinaryTruck extends Truck {
 	
 	
 	@Override
-	public double getCost() {
+	public double getCost() throws StockException {
 		
 		Stock cargo = this.getCargo();
 		
@@ -40,7 +43,7 @@ public class OrdinaryTruck extends Truck {
 	
 	
 	@Override
-	public void loadOnTruck(Item item, int quantity) throws DeliveryException {
+	public void loadOnTruck(Item item, int quantity) throws DeliveryException, StockException {
 		
 		if (item.getRequiresTemperature()) {
 			// Check if item requires temperature
@@ -69,8 +72,14 @@ public class OrdinaryTruck extends Truck {
 		// Loop through items adding them to the string
 		for (int i = 0; i < cargo.uniqueItems(); i++) {
 			
-			name = cargo.getItemByIndex(i).getName();
-			quantity = String.valueOf(cargo.currentQuantity(name));
+			try {
+				name = cargo.getItemByIndex(i).getName();
+				quantity = String.valueOf(cargo.currentQuantity(name));
+			} catch (StockException e) {
+			}
+			
+				
+			
 			str += name + "," + quantity + "\n";
 		}
 		

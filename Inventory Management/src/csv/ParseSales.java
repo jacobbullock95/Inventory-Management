@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import item.Stock;
+import item.StockException;
 
 
 /**
@@ -38,8 +39,9 @@ public class ParseSales {
 	 * @param stock whose stock levels are being reduced
 	 * @return The total profit from the sales
 	 * @throws CSVFormatException 
+	 * @throws StockException 
 	 */
-	public double parseResults(Stock stock) throws CSVFormatException {
+	public double parseResults(Stock stock) throws CSVFormatException, StockException {
 		
 		double profit = 0;
 		

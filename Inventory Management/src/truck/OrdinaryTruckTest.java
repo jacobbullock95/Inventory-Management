@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import item.Item;
+import item.StockException;
 
 
 public class OrdinaryTruckTest {
@@ -79,7 +80,7 @@ public class OrdinaryTruckTest {
 	 * Test 2: Put an item of stock on the truck
 	 */
 	@Test 
-	public void loadStockItemTest() throws DeliveryException  {
+	public void loadStockItemTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -95,7 +96,7 @@ public class OrdinaryTruckTest {
 	 * Test 3: Counts the trucks current cargo
 	 */
 	@Test 
-	public void countTruckStockTest() throws DeliveryException  {
+	public void countTruckStockTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 				
@@ -113,7 +114,7 @@ public class OrdinaryTruckTest {
 	 * Test 4: Calculate the cost of the truck
 	 */
 	@Test 
-	public void getTruckCostTest() throws DeliveryException  {
+	public void getTruckCostTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -133,7 +134,7 @@ public class OrdinaryTruckTest {
 	 * Hint: Use .toSrting()
 	 */
 	@Test 
-	public void listCargoTest() throws DeliveryException  {
+	public void listCargoTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		
@@ -151,7 +152,7 @@ public class OrdinaryTruckTest {
 	 * Test 6: Throw error if temp controlled item is put on truck
 	 */
 	@Test
-	public void throwTempErrorTest() throws DeliveryException  {
+	public void throwTempErrorTest() throws DeliveryException, StockException  {
 		thrown.expect(DeliveryException.class);
 		thrown.expectMessage("Item requires temperature");
 		//Create new truck
@@ -166,7 +167,7 @@ public class OrdinaryTruckTest {
 	 * Test 7: Throw error if no room left on truck but item is trying to be loaded
 	 */
 	@Test
-	public void truckFullTest() throws DeliveryException  {
+	public void truckFullTest() throws DeliveryException, StockException  {
 		thrown.expect(DeliveryException.class);
 		thrown.expectMessage("No room left on truck");
 		//Create new truck

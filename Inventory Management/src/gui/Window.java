@@ -30,7 +30,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import csv.CSVFormatException;
 import csv.ParseItems;
 import csv.ParseManifest;
 import csv.ParseSales;
@@ -209,6 +208,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
 				} catch (CSVFormatException e) {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the format of the CSV you selected. See error details below \n\n" + e);
+				} catch (StockException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores stock system. See error details below \n\n" + e);
+
 				}
 			}
 	    });
@@ -251,6 +253,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the format of the CSV you selected. See error details below \n\n" + e);
 				} catch (DeliveryException e) {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores delivery system. See error details below \n\n" + e);
+				} catch (StockException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores stock system. See error details below \n\n" + e);
+
 				}
 
 				System.out.println(store.getCapital());
@@ -289,6 +294,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
 				} catch (DeliveryException e) {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores delivery system. See error details below \n\n" + e);
+				} catch (StockException e) {
+					JOptionPane.showMessageDialog(null, "Sorry, there was an error with stores stock system. See error details below \n\n" + e);
+
 				}
 			}
 	    });
@@ -313,8 +321,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	
 	/**
 	 * Updates the quantities in the table based on the current stock levels
+	 * @throws StockException 
 	 */
-	private void updateItemQuantityTable() {
+	private void updateItemQuantityTable() throws StockException {
 		final int QUANTITY_COL = 1;
 		
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -329,8 +338,9 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	
 	/**
 	 * Adds all items and their properties to the table
+	 * @throws StockException 
 	 */
-	private void addItemsToTable() {
+	private void addItemsToTable() throws StockException {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		int rowCount = model.getRowCount();
 		

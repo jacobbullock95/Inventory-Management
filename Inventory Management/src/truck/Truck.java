@@ -2,6 +2,7 @@ package truck;
 
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 /**
  * An abstract class that implements the basic functions required to manage a truck
@@ -27,8 +28,9 @@ public abstract class Truck {
 	/**
 	 * Calculates the total cost of the truck plus its contents
 	 * @return The cost of the truck plus its contents in dollars
+	 * @throws StockException 
 	 */
-	public abstract double getCost();
+	public abstract double getCost() throws StockException;
 	
 	
 	/**
@@ -36,8 +38,9 @@ public abstract class Truck {
 	 * @param item to be loaded
 	 * @param quantity of item to load
 	 * @throws DeliveryException when excess items are loaded or a temperature controlled item is placed on a truck that can not supply that temperature
+	 * @throws StockException 
 	 */
-	public abstract void loadOnTruck(Item item, int quantity) throws DeliveryException;
+	public abstract void loadOnTruck(Item item, int quantity) throws DeliveryException, StockException;
 	
 	
 	/**
@@ -75,8 +78,9 @@ public abstract class Truck {
 	 * Counts the number of a specific item on board the truck
 	 * @param itemName is the name of the item
 	 * @return the quantity of that item in the trucks cargo
+	 * @throws StockException 
 	 */
-	public int countItemStock(String itemName) {
+	public int countItemStock(String itemName) throws StockException {
 		return cargo.currentQuantity(itemName);
 	}
 	

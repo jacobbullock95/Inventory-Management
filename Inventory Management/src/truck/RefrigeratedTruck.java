@@ -3,8 +3,11 @@
 package truck;
 
 import java.lang.Math;
+
+
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 /**
  * Extends the truck class to implement the specific functions required to manage a refrigerated truck
@@ -37,7 +40,7 @@ public class RefrigeratedTruck extends Truck {
 	
 	
 	@Override
-	public double getCost() {
+	public double getCost() throws StockException {
 		
 		Stock cargo = this.getCargo();
 		
@@ -59,7 +62,7 @@ public class RefrigeratedTruck extends Truck {
 	
 	
 	@Override
-	public void loadOnTruck(Item item, int quantity) throws DeliveryException {
+	public void loadOnTruck(Item item, int quantity) throws DeliveryException, StockException {
 		
 		if ((this.countAllStock() + quantity) > this.getCapacity()) {
 			// Check if room left on truck
@@ -103,8 +106,14 @@ public class RefrigeratedTruck extends Truck {
 		// Loop through items adding them to the string
 		for (int i = 0; i < cargo.uniqueItems(); i++) {
 			
-			name = cargo.getItemByIndex(i).getName();
-			quantity = String.valueOf(cargo.currentQuantity(name));
+			try {
+				name = cargo.getItemByIndex(i).getName();
+				quantity = String.valueOf(cargo.currentQuantity(name));
+			}
+			 catch (StockException e) {
+			}
+			
+			
 			str += name + "," + quantity + "\n";
 		}
 		

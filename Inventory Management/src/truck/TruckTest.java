@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import item.Item;
 import item.Stock;
+import item.StockException;
 
 public class TruckTest {
 	
@@ -35,9 +36,6 @@ public class TruckTest {
 
 	
 	private Stock stock;
-	
-	
-	
 	
 	
 	/* 
@@ -82,7 +80,7 @@ public class TruckTest {
 	 * countAllStock method in type Truck.
 	 */
 	@Test 
-	public void getCargoTest() throws DeliveryException {
+	public void getCargoTest() throws DeliveryException, StockException {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 		stock = new Stock();
@@ -103,7 +101,7 @@ public class TruckTest {
 	 * quantity of a specified item
 	 */
 	@Test 
-	public void countItemStockTest() throws DeliveryException  {
+	public void countItemStockTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 				
@@ -122,7 +120,7 @@ public class TruckTest {
 	 * identified correctly by the Trucks methods
 	 */
 	@Test 
-	public void getRemainingSpaceTest() throws DeliveryException  {
+	public void getRemainingSpaceTest() throws DeliveryException, StockException  {
 		//Create new truck
 		ordinaryTruck = new OrdinaryTruck();
 				

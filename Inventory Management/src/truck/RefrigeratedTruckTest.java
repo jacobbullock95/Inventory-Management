@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import item.Item;
+import item.StockException;
 
 public class RefrigeratedTruckTest {
 	
@@ -73,7 +74,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 2: Put an item of stock on the truck
 	 */
-	@Test public void loadStockItemTest() throws DeliveryException {
+	@Test public void loadStockItemTest() throws DeliveryException, StockException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -88,7 +89,7 @@ public class RefrigeratedTruckTest {
 	/*
 	 * Test 3: Counts the trucks current cargo
 	 */
-	@Test public void countTruckStockTest() throws DeliveryException {
+	@Test public void countTruckStockTest() throws DeliveryException, StockException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 				
@@ -105,7 +106,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 4: Calculate the cost of the truck
 	 */
-	@Test public void getTruckCost() throws DeliveryException {
+	@Test public void getTruckCost() throws DeliveryException, StockException {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -124,7 +125,7 @@ public class RefrigeratedTruckTest {
 	 * Test 5: List the cargo currently on the truck
 	 * Hint: Use .toSrting()
 	 */
-	@Test public void listCargoTest() throws DeliveryException  {
+	@Test public void listCargoTest() throws DeliveryException, StockException  {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -144,7 +145,7 @@ public class RefrigeratedTruckTest {
 	/* 
 	 * Test 6: Test that truck temperature is cold enough for coldest item
 	 */
-	@Test public void getMaxTempTest() throws DeliveryException  {
+	@Test public void getMaxTempTest() throws DeliveryException, StockException  {
 		//Create new truck
 		refrigeratedTruck = new RefrigeratedTruck();
 		
@@ -163,7 +164,7 @@ public class RefrigeratedTruckTest {
 	 * Test 7: Try to add a cold item to a truck which has a temp
 	 * not low enough
 	 */
-	@Test public void tempExceptionTest() throws DeliveryException  {
+	@Test public void tempExceptionTest() throws DeliveryException, StockException  {
 		thrown.expect(DeliveryException.class);
 		thrown.expectMessage("Required temperature too low");
 		//Create new truck
@@ -177,11 +178,59 @@ public class RefrigeratedTruckTest {
 		
 		
 		refrigeratedTruck.loadOnTruck(item5, 1);
+				
+	}
+	
+	/* 
+	 * Test 8: Try to add an item to an already full truck
+	 */
+	@Test public void truckFullExceptionTest() throws DeliveryException, StockException  {
+		thrown.expect(DeliveryException.class);
+		thrown.expectMessage("No room left on truck");
+		//Create new truck
+		refrigeratedTruck = new RefrigeratedTruck();
+		refrigeratedTruck.loadOnTruck(item3, 801);			
 		
+	}
+	
+	/* 
+	 * Test 9: Add item test, (add item is a Stock method however is called in the truck class
+	 * so this test is utlised to complete the coverage of the junit testing)
+	 */
+	@Test public void addItemTest() throws DeliveryException, StockException  {
+		item5 = new Item("testitem", 1,1,1,1);
+		//Create new truck
+		refrigeratedTruck = new RefrigeratedTruck();
+		
+		//Add an item
+		refrigeratedTruck.loadOnTruck(item5, 10);
+		
+		assertEquals(10, refrigeratedTruck.countItemStock(item5.getName()));
 		
 				
 		
 	}
-
+	
+	/* 
+	 * Test 10: Add item test, (add item is a Stock method however is called in the truck class
+	 * so this test is utlised to complete the coverage of the junit testing)
+	 */
+	@Test public void addItemTest2() throws DeliveryException, StockException  {
+		item5 = new Item("testitem", 1,1,1,1,11);
+		//Create new truck
+		refrigeratedTruck = new RefrigeratedTruck();
+		
+		//Add an item
+		refrigeratedTruck.loadOnTruck(item5, 10);
+		
+		assertEquals(10, refrigeratedTruck.countItemStock(item5.getName()));
+		
+				
+		
+	}
+	
+	
+	
+	
 
 }

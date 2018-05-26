@@ -402,11 +402,10 @@ public class StockTest {
 		stock = new Stock();
 		
 		// Add items to the collection
-		stock.addItem(item1, -20);
-		stock.addItem(item2, 1002);
+		stock.addItem(item2, 1);
 		
 		// Access an item that does not exist
-		stock.getItemByIndex(10);
+		stock.getItemByIndex(1);
 	}
 	
 	/*
@@ -422,8 +421,7 @@ public class StockTest {
 		stock = new Stock();
 		
 		// Add items to the collection
-		stock.addItem(item1, -20);
-		stock.addItem(item2, 1002);
+		stock.addItem(item2, 100);
 		
 		// Access an item that does not exist
 		stock.getItemByName("Cookies");

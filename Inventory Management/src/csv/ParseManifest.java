@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import item.Stock;
+import item.StockException;
 import truck.DeliveryException;
 import truck.Manifest;
 import truck.Truck;
@@ -43,8 +44,9 @@ public class ParseManifest {
 	 * @return The completed manifest
 	 * @throws DeliveryException
 	 * @throws CSVFormatException
+	 * @throws StockException 
 	 */
-	public Manifest parseResults(Stock stock) throws DeliveryException, CSVFormatException {
+	public Manifest parseResults(Stock stock) throws DeliveryException, CSVFormatException, StockException {
 		
 		final boolean COOLED = true;
 		final boolean NOT_COOLED = false;
