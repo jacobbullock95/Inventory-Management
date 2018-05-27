@@ -485,6 +485,8 @@ public class Window extends JFrame implements ActionListener, Runnable {
 	    GridBagConstraints constraints = new GridBagConstraints(); 
 	    constraints.fill = GridBagConstraints.NONE;
 	    constraints.anchor = GridBagConstraints.CENTER;
+	    constraints.weightx = 100;
+	    constraints.weighty = 100;	
 	    
 	    addToPanel(pnlLabel, storeNameLabel, constraints, 0, 0, 1, 1);
 	    addToPanel(pnlLabel, storeCapLabel, constraints, 2, 0, 1, 1);
