@@ -128,7 +128,7 @@ public class OrdinaryTruckTest {
 		
 		
 		//Check current items on the truck
-		assertEquals(">Ordinary\nrice,400\n", ordinaryTruck.toString());
+		assertEquals(">Ordinary\nrice,400\n", ordinaryTruck.toStringTruck());
 				
 		
 	}

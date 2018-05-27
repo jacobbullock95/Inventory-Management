@@ -61,7 +61,7 @@ public class OrdinaryTruck extends Truck {
 
 	
 	@Override
-	public String toString() {
+	public String toStringTruck() throws StockException {
 		
 		Stock cargo = this.getCargo();
 		String str = ">Ordinary\n";
@@ -71,15 +71,10 @@ public class OrdinaryTruck extends Truck {
 		
 		// Loop through items adding them to the string
 		for (int i = 0; i < cargo.uniqueItems(); i++) {
-			
-			try {
-				name = cargo.getItemByIndex(i).getName();
-				quantity = String.valueOf(cargo.currentQuantity(name));
-			} catch (StockException e) {
-			}
-			
-				
-			
+
+			name = cargo.getItemByIndex(i).getName();
+			quantity = String.valueOf(cargo.currentQuantity(name));
+
 			str += name + "," + quantity + "\n";
 		}
 		

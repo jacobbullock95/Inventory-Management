@@ -46,8 +46,9 @@ public abstract class Truck {
 	/**
 	 * Converts the truck to a CSV format
 	 * @return the truck type and cargo names and quantity in a CSV format
+	 * @throws StockException
 	 */
-	public abstract String toString();
+	public abstract String toStringTruck() throws StockException;
 	
 	
 	/**

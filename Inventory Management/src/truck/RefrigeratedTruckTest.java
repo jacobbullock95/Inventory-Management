@@ -123,7 +123,7 @@ public class RefrigeratedTruckTest {
 		
 		
 		//Check current items on the truck
-		assertEquals(">Refrigerated\nice cream,100\nmilk,400\n", refrigeratedTruck.toString());
+		assertEquals(">Refrigerated\nice cream,100\nmilk,400\n", refrigeratedTruck.toStringTruck());
 				
 		
 	}
@@ -163,8 +163,6 @@ public class RefrigeratedTruckTest {
 		
 		item5 = new Item("testitem", 1,1,1,1, temp);
 		
-		
-		
 		refrigeratedTruck.loadOnTruck(item5, 1);
 				
 	}
@@ -195,8 +193,6 @@ public class RefrigeratedTruckTest {
 		
 		assertEquals(10, refrigeratedTruck.countItemStock(item5.getName()));
 		
-				
-		
 	}
 	
 	/* 
@@ -213,8 +209,16 @@ public class RefrigeratedTruckTest {
 		
 		assertEquals(10, refrigeratedTruck.countItemStock(item5.getName()));
 		
-				
+	}
+	
+	/*
+	 * Directly Test DeliveryException
+	 */
+	@Test
+	public void deliveryException() throws DeliveryException {
+		thrown.expect(DeliveryException.class);
 		
+		throw(new DeliveryException());
 	}
 	
 	

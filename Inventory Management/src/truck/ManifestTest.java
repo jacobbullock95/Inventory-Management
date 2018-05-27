@@ -25,11 +25,12 @@ public class ManifestTest {
 	Truck truck2 = new OrdinaryTruck();
 	Truck truck3 = new RefrigeratedTruck();
 	Item item1 = new Item("a", 1, 2, 3, 1000);
-	Item item2 = new Item("a", 1, 2, 3, 800);
-	Item item3 = new Item("a", 1, 2, 3, 801);
-	Item item4 = new Item("a", 1, 2, 3, 1);
+	Item item2 = new Item("b", 1, 2, 3, 800);
+	Item item3 = new Item("c", 1, 2, 3, 801);
+	Item item4 = new Item("d", 1, 2, 3, 1);
 	
-	Item item5 = new Item("a", 1, 2, 3, 1,-10);
+	Item item5 = new Item("e", 1, 2, 3, 1, -10);
+	Item item6 = new Item("f", 1, 2, 3, 1, -20);
 	Stock stock = new Stock();
 
 
@@ -102,8 +103,9 @@ public class ManifestTest {
 		assertEquals(theString,manifest.toString());
 	}
 	
-	/* Test 4: Get the non full truck and not the full one.
-	*/
+	/* 
+	 * Test 4a: Get the non full truck and not the full one.
+	 */
 	@Test public void nonFullTruckTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -120,8 +122,9 @@ public class ManifestTest {
 		
 	}
 	
-	/* Test 4: Get the non full truck and not the full one.
-	*/
+	/* 
+	 * Test 4b: Get the non full truck and not the full one.
+	 */
 	@Test public void coldNonFullTruckTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -138,8 +141,9 @@ public class ManifestTest {
 		
 	}
 	
-	/* Test 5: Create a ordinaryTruck
-	*/
+	/* 
+	 * Test 5: Create a ordinaryTruck
+	 */
 	@Test public void createTruckTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -148,14 +152,15 @@ public class ManifestTest {
 		
 		manifest.addTruck(truck4);
 		
-		manifest.loadTrucks(false, item1);
+		manifest.loadTrucks(false, item4);
 		
-		assertEquals(manifest.createTruck(false).toString(), manifest.getNonFullTruck(false).toString());
+		assertEquals(">Ordinary\nd,1\n", manifest.getNonFullTruck(false).toString());
 		
 	}
 	
-	/* Test 6: Create a refrigeratedTruck
-	*/
+	/* 
+	 * Test 6: Create a refrigeratedTruck
+	 */
 	@Test public void createColdTruckTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -164,14 +169,15 @@ public class ManifestTest {
 		
 		manifest.addTruck(truck4);
 		
-		manifest.loadTrucks(true, item2);
+		manifest.loadTrucks(true, item4);
 		
-		assertEquals(manifest.createTruck(true).toString(), manifest.getNonFullTruck(true).toString());		
+		assertEquals(">Refrigerated\nd,1\n", manifest.getNonFullTruck(true).toString());		
 	}
 	
-	/* Test 7: load more items than truck capacity and ensure a new truck is created
+	/* 
+	 * Test 7: load more items than truck capacity and ensure a new truck is created
 	 * and item is continued to be loaded
-	*/
+	 */
 	@Test public void continueLoadingTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -184,29 +190,29 @@ public class ManifestTest {
 		
 		manifest.loadTrucks(true, item3);
 		
-		assertEquals(truck5, manifest.getNonFullTruck(true));		
+		assertEquals(truck5, manifest.getNonFullTruck(true));
+		assertEquals(">Refrigerated\nc,1\n", manifest.getNonFullTruck(true).toString());	
 	}
 	
-	/* Test 8: export Manifest test
-	*/
+	/* 
+	 * Test 8: export Manifest test
+	 * The exported CSV needs to be manually examined
+	 */
 	@Test public void exportManifestTest() throws DeliveryException, StockException, IOException {
 		//Create new manifest
 		manifest = new Manifest(stock);
 		
 		Truck truck4 = manifest.createTruck(true);
 		manifest.addTruck(truck4);
+		manifest.loadTrucks(true, item3);
 		
-		String file = " ";
+		String file = "test.csv";
 		
 		manifest.exportManifest(file);
-
-		assertEquals(file, " ");
-		
-		
 	}
 	
 	/*
-	 * Test 8: load trucks test
+	 * Test 9: load trucks test
 	 */
 	@Test public void loadTrucksTest() throws DeliveryException, StockException {
 		//Create new manifest
@@ -223,27 +229,28 @@ public class ManifestTest {
 	}
 	
 	/*
-	 * Test 9: Calculate the manifest
+	 * Test 10: Calculate the manifest
 	 */
-	
 	@Test public void calculateManifestTest() throws DeliveryException, StockException {
-		//Create new manifest
+		
+		stock.addItem(item5, 1);
+		stock.addItem(item2, 1);
+		stock.addItem(item3, 0);
+		stock.addItem(item4, 0);
+		stock.addItem(item6, 0);
+		
+		// Create new manifest
 		manifest = new Manifest(stock);
 		
-		stock.addItem(item1, 1);
-		
-		manifest.addTruck(truck1);
-		
-		manifest.loadTrucks(false, item1);
-		
 		manifest.CalculateManifest();
-		
+
+		assertEquals(">Refrigerated\nb,798\ne,1\nf,1\n>Ordinary\nb,2\nc,801\nd,1\n", manifest.toString());
+
 	}
 	
 	/*
-	 * Test 10: Optimize Manifest
+	 * Test 11: Optimize Manifest
 	 */
-	
 	@Test public void optimizeManifestTest() throws DeliveryException, StockException {
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -257,6 +264,7 @@ public class ManifestTest {
 		manifest.OptimiseManifest();
 				
 	}
+	
 	
 	
 	
