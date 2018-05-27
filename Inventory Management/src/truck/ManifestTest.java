@@ -86,7 +86,7 @@ public class ManifestTest {
 	 * Test 3: List the manifest
 	 * Hint: Use .toSrting()
 	 */
-	@Test public void listManifestTest() throws DeliveryException  {
+	@Test public void listManifestTest() throws DeliveryException, StockException  {
 
 		//Create new manifest
 		manifest = new Manifest(stock);
@@ -100,7 +100,7 @@ public class ManifestTest {
 		theString = ">Ordinary\n>Ordinary\n>Refrigerated\n";
 		
 		//Check the CSV is created correctly
-		assertEquals(theString,manifest.toString());
+		assertEquals(theString, manifest.toStringManifest());
 	}
 	
 	/* 
@@ -154,7 +154,7 @@ public class ManifestTest {
 		
 		manifest.loadTrucks(false, item4);
 		
-		assertEquals(">Ordinary\nd,1\n", manifest.getNonFullTruck(false).toString());
+		assertEquals(">Ordinary\nd,1\n", manifest.getNonFullTruck(false).toStringTruck());
 		
 	}
 	
@@ -171,7 +171,7 @@ public class ManifestTest {
 		
 		manifest.loadTrucks(true, item4);
 		
-		assertEquals(">Refrigerated\nd,1\n", manifest.getNonFullTruck(true).toString());		
+		assertEquals(">Refrigerated\nd,1\n", manifest.getNonFullTruck(true).toStringTruck());		
 	}
 	
 	/* 
@@ -191,7 +191,7 @@ public class ManifestTest {
 		manifest.loadTrucks(true, item3);
 		
 		assertEquals(truck5, manifest.getNonFullTruck(true));
-		assertEquals(">Refrigerated\nc,1\n", manifest.getNonFullTruck(true).toString());	
+		assertEquals(">Refrigerated\nc,1\n", manifest.getNonFullTruck(true).toStringTruck());	
 	}
 	
 	/* 
@@ -244,7 +244,7 @@ public class ManifestTest {
 		
 		manifest.CalculateManifest();
 
-		assertEquals(">Refrigerated\nb,798\ne,1\nf,1\n>Ordinary\nb,2\nc,801\nd,1\n", manifest.toString());
+		assertEquals(">Refrigerated\nb,798\ne,1\nf,1\n>Ordinary\nb,2\nc,801\nd,1\n", manifest.toStringManifest());
 
 	}
 	

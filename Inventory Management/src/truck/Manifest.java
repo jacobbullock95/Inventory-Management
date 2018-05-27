@@ -203,15 +203,16 @@ public class Manifest {
 	/**
 	 * Concatenates all  the results from all truck.toString() within the manifest together
 	 * @return A string which is the concatenation of all of the truck toString results in the manifest
+	 * @throws StockException 
 	 */
-	public String toString() {
+	public String toStringManifest() throws StockException {
 		
 		String str = "";
 		
 		for (int i = 0; i < truckList.size(); i++) {
 			
 
-			str += truckList.get(i).toString();
+			str += truckList.get(i).toStringTruck();
 		}
 		
 		
@@ -224,9 +225,10 @@ public class Manifest {
 	 * Exports the manifest to a CSV document at a specified location
 	 * @param file is the location where the CSV will be saved
 	 * @throws IOException 
+	 * @throws StockException 
 	 */
-	public void exportManifest(String file) throws IOException {
-		new CSVWrite(file, toString());
+	public void exportManifest(String file) throws IOException, StockException {
+		new CSVWrite(file, toStringManifest());
 	}
 	
 	

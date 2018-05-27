@@ -141,7 +141,7 @@ public class Window extends JFrame implements ActionListener, Runnable {
 				// If the store has already been initialised, warn user of consequences
 				if (storeInitialised) {
 					userOption = JOptionPane.showConfirmDialog(null
-				               ,"Performing this step again not effect items already imported.\nIt will successfully add items not currently in your stock list.\nDo you wish to continue?"
+				               ,"Performing this step again will not effect items already imported.\nIt will successfully add items not currently in your stock list.\nDo you wish to continue?"
 				               ,"Warning"
 				               ,JOptionPane.YES_NO_OPTION);
 				}
@@ -205,7 +205,6 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					store.profit(parser.parseResults(store.getInventory()));
 					updateItemQuantityTable();
 					storeCapLabel.setText(store.toString());
-					System.out.println(store.getCapital());
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
 				} catch (CSVFormatException e) {
@@ -248,7 +247,6 @@ public class Window extends JFrame implements ActionListener, Runnable {
 					store.loss(manifest.getTotalCost());
 					updateItemQuantityTable();
 					storeCapLabel.setText(store.toString());
-					System.out.println("Total Cost: " + manifest.getTotalCost());
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(null, "Sorry, there was an error with the file you selected. See error details below \n\n" + e);
 				} catch (CSVFormatException e) {
@@ -260,7 +258,6 @@ public class Window extends JFrame implements ActionListener, Runnable {
 
 				}
 
-				System.out.println(store.getCapital());
 			}
 	    });
 	    
